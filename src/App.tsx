@@ -3,8 +3,10 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { Box, Button, CircularProgress, Dialog, IconButton, Slide, Typography } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import React, { Suspense, lazy, useEffect, useState } from "react";
-import MediaListItem from "./components/MediaListItem";
-import { Media, validateMedia } from "./utils";
+import ContentListItem from "./components/ContentListItem";
+import Signature from "./components/Signature";
+import { ContentData } from "./types";
+import { validateContent } from "./utils";
 const DialogContent = lazy(() => import("./components/DialogContent"));
 
 const DialogTransition = React.forwardRef(function Transition(
@@ -17,18 +19,11 @@ const DialogTransition = React.forwardRef(function Transition(
 });
 
 export default function App() {
-	const [watchlist, setWatchlist] = useState<Media[]>([]);
+	const [watchlist, setWatchlist] = useState<ContentData[]>([]);
 	const [watchlistLoaded, setWatchlistLoaded] = useState<boolean>(false);
 
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-	const [openingDialogData, setOpeningDialogData] = useState<undefined | Media>(undefined);
-
-	function getIndexFromMedia(media: Media): number {
-		if (media.id < 0) return -1;
-
-		var index = watchlist.findIndex((e) => e.id == media.id);
-		return index;
-	}
+	const [openingDialogData, setOpeningDialogData] = useState<undefined | ContentData>(undefined);
 
 	useEffect(() => {
 		refreshMedia();
@@ -42,15 +37,15 @@ export default function App() {
 		// });
 	}
 
-	function showDialog(newDialogFor: Media | undefined) {
+	function showDialog(newDialogFor: ContentData | undefined) {
 		setOpeningDialogData(newDialogFor);
 		setDialogOpen(true);
 	}
 
-	function saveDialog(newMedia: Media) {
-		if (validateMedia(newMedia)) {
-			if (newMedia.id < 0) addMedia(newMedia);
-			else updateMedia(newMedia);
+	function saveDialog(newContent: ContentData) {
+		if (validateContent(newContent)) {
+			// if (newContent.id < 0) addMedia(newContent);
+			// else updateMedia(newContent);
 		}
 
 		closeDialog();
@@ -60,7 +55,7 @@ export default function App() {
 		setDialogOpen(false);
 	}
 
-	function addMedia(newMedia: Media) {
+	function addContent(newMedia: ContentData) {
 		// newMedia.id = getNextId(watchlist);
 		// addNewMediaAPI(newMedia);
 		// var newWatchlist = [...watchlist];
@@ -68,7 +63,7 @@ export default function App() {
 		// setWatchlist(newWatchlist);
 	}
 
-	function updateMedia(newMedia: Media) {
+	function updateContent(newMedia: ContentData) {
 		// updateMediaDataAPI(newMedia);
 		// var newWatchlist = [...watchlist];
 		// var index = getIndexFromMedia(newMedia);
@@ -76,7 +71,7 @@ export default function App() {
 		// setWatchlist(newWatchlist);
 	}
 
-	function deleteMedia(media: Media) {
+	function deleteContent(media: ContentData) {
 		// deleteMediaAPI(media);
 		// var newWatchlist = [...watchlist];
 		// var index = getIndexFromMedia(media);
@@ -88,26 +83,26 @@ export default function App() {
 		<>
 			<Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", m: "10px" }}>
 				<Typography className="shinyText" sx={{ fontSize: "42px", fontWeight: 500 }}>
-					Watchrr
+					Watchrr2
 				</Typography>
 				{!watchlistLoaded ? (
 					<CircularProgress sx={{ display: "block", margin: "auto" }} />
 				) : (
 					watchlist.map((v, i) => {
 						return (
-							<MediaListItem
-								media={v}
+							<ContentListItem
+								content={v}
 								key={i}
 								showDialog={showDialog}
-								updateMedia={updateMedia}
-								deleteMedia={deleteMedia}
+								updateContent={updateContent}
+								deleteContent={deleteContent}
 							/>
 						);
 					})
 				)}
 			</Box>
 			<Button
-				className="newMediaButton"
+				className="neContentButton"
 				onClick={() => {
 					showDialog(undefined);
 				}}
@@ -145,11 +140,7 @@ export default function App() {
 				</IconButton>
 			</Box>
 
-			<Box sx={{ position: "absolute", right: "6px", bottom: "2px" }}>
-				<Typography variant="subtitle1" color="info">
-					By Joel Cutler
-				</Typography>
-			</Box>
+			<Signature />
 		</>
 	);
 }

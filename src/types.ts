@@ -4,3 +4,5 @@ export type ContentData = { type: ContentType; name: string; link: string | unde
 	| { type: "Film" }
 	| { type: "Show"; season: number; episode: number }
 );
+
+export type DialogFor = "new" | number;

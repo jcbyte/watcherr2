@@ -3,32 +3,38 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Button, Grow, IconButton } from "@mui/material";
-import { Media } from "../utils";
+import { ContentData } from "../types";
 
-export default function MediaListItem({
-	media,
+export default function ContentListItem({
+	content,
 	showDialog,
-	updateMedia,
-	deleteMedia,
+	updateContent,
+	deleteContent,
 }: {
-	media: Media;
+	content: ContentData;
 	showDialog: any;
-	updateMedia: any;
-	deleteMedia: any;
+	updateContent: any;
+	deleteContent: any;
 }) {
 	function nextSeason() {
-		var newMedia = { ...media };
-		newMedia.mediaData.season += 1;
-		newMedia.mediaData.episode = 1;
+		var newMedia = { ...content };
 
-		updateMedia(newMedia);
+		if (newMedia.type == "Film") return; // TODO
+
+		newMedia.season += 1;
+		newMedia.episode = 1;
+
+		updateContent(newMedia);
 	}
 
 	function nextEpisode() {
-		var newMedia = { ...media };
-		newMedia.mediaData.episode += 1;
+		var newMedia = { ...content };
 
-		updateMedia(newMedia);
+		if (newMedia.type == "Film") return; // TODO
+
+		newMedia.episode += 1;
+
+		updateContent(newMedia);
 	}
 
 	return (
@@ -43,26 +49,26 @@ export default function MediaListItem({
 							fontSize: "20px",
 							mr: "2px",
 							whiteSpace: "nowrap",
-							cursor: media.mediaData.link != "" ? "pointer" : "auto",
+							cursor: content.link != "" ? "pointer" : "auto",
 						}}
 						onClick={() => {
-							if (media.mediaData.link != "") {
-								window.open(media.mediaData.link);
+							if (content.link != "") {
+								window.open(content.link);
 							}
 						}}
 					>
-						{media.mediaData.name}
+						{content.name}
 					</Box>
 					<IconButton
 						className="smallButton"
 						sx={{ color: "#848484", alignSelf: "end" }}
 						onClick={() => {
-							showDialog(media);
+							showDialog(content);
 						}}
 					>
 						<EditIcon fontSize="inherit" />
 					</IconButton>
-					{media.mediaType == "Series" ? (
+					{content.type == "Show" ? (
 						<>
 							<Box
 								className="seriesBox"
@@ -79,8 +85,8 @@ export default function MediaListItem({
 									mr: "4px",
 								}}
 							>
-								<Box sx={{ fontSize: "18px" }}>S{media.mediaData.season}</Box>
-								<Box sx={{ fontSize: "18px" }}>E{media.mediaData.episode}</Box>
+								<Box sx={{ fontSize: "18px" }}>S{content.season}</Box>
+								<Box sx={{ fontSize: "18px" }}>E{content.episode}</Box>
 							</Box>
 							<Button className="bigButton" variant="contained" color="info" sx={{ mr: "4px" }} onClick={nextEpisode}>
 								<AddIcon fontSize="inherit" />
@@ -98,7 +104,7 @@ export default function MediaListItem({
 						variant="contained"
 						color="warning"
 						onClick={() => {
-							deleteMedia(media);
+							deleteContent(content);
 						}}
 					>
 						<DeleteOutlineIcon fontSize="inherit" />
