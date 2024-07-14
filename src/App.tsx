@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import ListItem from "./components/ListItem";
 import Signature from "./components/Signature";
@@ -21,6 +22,10 @@ export default function App() {
 
 	return (
 		<>
+			<Typography variant="h3" className="!m-5 text-center">
+				Watcherr 2
+			</Typography>
+
 			<div className="p-2 gap-2 flex flex-col">
 				{contentList.map((content: ContentData, i: number) => {
 					return <ListItem key={i} content={content} />;
