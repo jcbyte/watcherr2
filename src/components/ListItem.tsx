@@ -5,9 +5,11 @@ import { ContentData } from "../types";
 
 export default function ListItem({ content }: { content: ContentData }) {
 	return (
-		<Paper elevation={6} className="p-1">
+		<Paper elevation={6} className="p-2">
 			<div className="flex flex-row items-center gap-2">
-				<Typography variant="body1">{content.name}</Typography>
+				<Typography variant="body1" className="!text-xl">
+					{content.name}
+				</Typography>
 				<IconButton size="small" className="self-end !text-[12px] !-ml-2">
 					<EditIcon fontSize="inherit" />
 				</IconButton>

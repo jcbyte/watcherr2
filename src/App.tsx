@@ -1,4 +1,5 @@
-import { Typography } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import ListItem from "./components/ListItem";
 import Signature from "./components/Signature";
@@ -30,6 +31,10 @@ export default function App() {
 				{contentList.map((content: ContentData, i: number) => {
 					return <ListItem key={i} content={content} />;
 				})}
+
+				<Button variant="contained" className="!mt-4">
+					<AddIcon />
+				</Button>
 			</div>
 
 			<Signature />
