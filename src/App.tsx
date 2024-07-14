@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ContentData } from "./types";
 
@@ -13,5 +14,9 @@ export default function App() {
 		]);
 	}, []);
 
-	return <div className="text-teal-800">Watcherr2</div>;
+	return (
+		<>
+			<Button variant="contained">test</Button>
+		</>
+	);
 }
