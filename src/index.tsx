@@ -12,25 +12,20 @@ const theme = createTheme({
 	palette: {
 		mode: "dark",
 		primary: {
-			main: "#5e35b1",
+			main: "#5c408f",
 		},
 		secondary: {
-			main: "#3949ab",
-		},
-		error: {
-			main: "#e53935",
+			main: "#ac72ff",
 		},
 		warning: {
-			main: "#fb8c00",
+			main: "#bc413e",
 		},
 		info: {
-			main: "#757575",
-		},
-		success: {
-			main: "#43a047",
+			main: "#4c4c4c",
 		},
 		background: {
 			default: "#1e1e1e",
+			paper: "#1e1e1e",
 		},
 		text: {
 			primary: "#dcdcdc",

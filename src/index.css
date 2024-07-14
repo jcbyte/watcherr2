@@ -1,3 +1,77 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html,
+body {
+	height: 100%;
+	overflow: hidden;
+	font-family: "Roboto", sans-serif;
+}
+
+#main {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+}
+
+#app {
+	width: 100%;
+	height: 100%;
+}
+
+.listItem {
+	background-color: rgb(51, 51, 51);
+	filter: drop-shadow(2px 2px 4px #000000);
+}
+
+.smallButton {
+	height: 14px;
+	min-width: 14px !important;
+	width: 14px;
+
+	border-radius: 6px !important;
+
+	font-size: 14px !important;
+}
+
+.seriesBox {
+	filter: drop-shadow(1px 1px 2px #000000);
+}
+
+.bigButton {
+	height: 32px;
+	min-width: 32px !important;
+	width: 32px;
+
+	font-size: 20px !important;
+
+	border-radius: 6px !important;
+}
+
+.shinyText {
+	/* background: linear-gradient(
+    60deg,
+    #5c408f 0%,
+    #9279c0 20%,
+    #5c408f 40%,
+    #5c408f 100%
+  ); */
+	background: linear-gradient(-225deg, #dcdcdc 0%, #b29fd5 10%, #dcdcdc 100%);
+	background-clip: border-box;
+	background-size: 200% auto;
+	color: #fff;
+	background-clip: text;
+	text-fill-color: transparent;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation: textclip 3000ms linear infinite;
+}
+
+@keyframes textclip {
+	to {
+		background-position: -200% center;
+	}
+}

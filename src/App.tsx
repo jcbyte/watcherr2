@@ -1,43 +1,155 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import ListItem from "./components/ListItem";
-import Signature from "./components/Signature";
-import { ContentData } from "./types";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { Box, Button, CircularProgress, Dialog, IconButton, Slide, Typography } from "@mui/material";
+import { TransitionProps } from "@mui/material/transitions";
+import React, { Suspense, lazy, useEffect, useState } from "react";
+import MediaListItem from "./components/MediaListItem";
+import { Media, validateMedia } from "./utils";
+const DialogContent = lazy(() => import("./components/DialogContent"));
 
-// TODO create working version with no storage
-// TODO add localstorage
-// TODO add firestore
+const DialogTransition = React.forwardRef(function Transition(
+	props: TransitionProps & {
+		children: React.ReactElement<any, any>;
+	},
+	ref: React.Ref<unknown>
+) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function App() {
-	const [contentList, setContentList] = useState<ContentData[]>([]);
+	const [watchlist, setWatchlist] = useState<Media[]>([]);
+	const [watchlistLoaded, setWatchlistLoaded] = useState<boolean>(false);
+
+	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+	const [openingDialogData, setOpeningDialogData] = useState<undefined | Media>(undefined);
+
+	function getIndexFromMedia(media: Media): number {
+		if (media.id < 0) return -1;
+
+		var index = watchlist.findIndex((e) => e.id == media.id);
+		return index;
+	}
 
 	useEffect(() => {
-		setContentList([
-			{ type: "Film", name: "film1", link: undefined, time: undefined },
-			{ type: "Film", name: "film2", link: "filmlink", time: 4 },
-			{ type: "Show", name: "show1", link: undefined, time: 23, season: 1, episode: 2 },
-			{ type: "Show", name: "show2", link: "showlink", time: undefined, season: 3, episode: 14 },
-		]);
+		refreshMedia();
 	}, []);
+
+	function refreshMedia() {
+		// setWatchlistLoaded(false);
+		// getAllMediaAPI().then((data) => {
+		// 	setWatchlist(data);
+		// 	setWatchlistLoaded(true);
+		// });
+	}
+
+	function showDialog(newDialogFor: Media | undefined) {
+		setOpeningDialogData(newDialogFor);
+		setDialogOpen(true);
+	}
+
+	function saveDialog(newMedia: Media) {
+		if (validateMedia(newMedia)) {
+			if (newMedia.id < 0) addMedia(newMedia);
+			else updateMedia(newMedia);
+		}
+
+		closeDialog();
+	}
+
+	function closeDialog() {
+		setDialogOpen(false);
+	}
+
+	function addMedia(newMedia: Media) {
+		// newMedia.id = getNextId(watchlist);
+		// addNewMediaAPI(newMedia);
+		// var newWatchlist = [...watchlist];
+		// newWatchlist.push(newMedia);
+		// setWatchlist(newWatchlist);
+	}
+
+	function updateMedia(newMedia: Media) {
+		// updateMediaDataAPI(newMedia);
+		// var newWatchlist = [...watchlist];
+		// var index = getIndexFromMedia(newMedia);
+		// newWatchlist[index] = newMedia;
+		// setWatchlist(newWatchlist);
+	}
+
+	function deleteMedia(media: Media) {
+		// deleteMediaAPI(media);
+		// var newWatchlist = [...watchlist];
+		// var index = getIndexFromMedia(media);
+		// newWatchlist.splice(index, 1);
+		// setWatchlist(newWatchlist);
+	}
 
 	return (
 		<>
-			<Typography variant="h3" className="!m-5 text-center">
-				Watcherr 2
-			</Typography>
+			<Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", m: "10px" }}>
+				<Typography className="shinyText" sx={{ fontSize: "42px", fontWeight: 500 }}>
+					Watchrr
+				</Typography>
+				{!watchlistLoaded ? (
+					<CircularProgress sx={{ display: "block", margin: "auto" }} />
+				) : (
+					watchlist.map((v, i) => {
+						return (
+							<MediaListItem
+								media={v}
+								key={i}
+								showDialog={showDialog}
+								updateMedia={updateMedia}
+								deleteMedia={deleteMedia}
+							/>
+						);
+					})
+				)}
+			</Box>
+			<Button
+				className="newMediaButton"
+				onClick={() => {
+					showDialog(undefined);
+				}}
+				variant="contained"
+				color="info"
+				sx={{ m: "10px", width: "calc(100% - 10px * 2)" }}
+				disabled={!watchlistLoaded}
+			>
+				<AddIcon />
+			</Button>
 
-			<div className="p-2 gap-2 flex flex-col">
-				{contentList.map((content: ContentData, i: number) => {
-					return <ListItem key={i} content={content} />;
-				})}
+			<Dialog
+				open={dialogOpen}
+				onClose={() => {
+					setDialogOpen(false);
+				}}
+				TransitionComponent={DialogTransition}
+				fullWidth
+			>
+				<Box bgcolor="#1e1e1e" sx={{ p: "10px", borderRadius: "6px" }}>
+					<Suspense fallback={<CircularProgress sx={{ display: "block", margin: "auto" }} />}>
+						<DialogContent
+							initialDialogData={openingDialogData}
+							dialogOpen={dialogOpen}
+							saveDialog={saveDialog}
+							closeDialog={closeDialog}
+						/>
+					</Suspense>
+				</Box>
+			</Dialog>
 
-				<Button variant="contained" className="!mt-4">
-					<AddIcon />
-				</Button>
-			</div>
+			<Box sx={{ position: "absolute", left: "6px", bottom: "2px" }}>
+				<IconButton size="large" disabled={!watchlistLoaded} onClick={refreshMedia}>
+					<RefreshIcon />
+				</IconButton>
+			</Box>
 
-			<Signature />
+			<Box sx={{ position: "absolute", right: "6px", bottom: "2px" }}>
+				<Typography variant="subtitle1" color="info">
+					By Joel Cutler
+				</Typography>
+			</Box>
 		</>
 	);
 }
