@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import ListItem from "./components/ListItem";
+import Signature from "./components/Signature";
 import { ContentData } from "./types";
+
+// TODO create working version with no storage
+// TODO add localstorage
+// TODO add firestore
 
 export default function App() {
 	const [contentList, setContentList] = useState<ContentData[]>([]);
@@ -21,6 +26,8 @@ export default function App() {
 					return <ListItem key={i} content={content} />;
 				})}
 			</div>
+
+			<Signature />
 		</>
 	);
 }
