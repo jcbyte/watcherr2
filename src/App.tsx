@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Paper } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ContentData } from "./types";
 
@@ -16,7 +16,15 @@ export default function App() {
 
 	return (
 		<>
-			<Button variant="contained">test</Button>
+			<div className="p-2 gap-2 flex flex-col">
+				{contentList.map((content: ContentData, i: number) => {
+					return (
+						<Paper key={i} elevation={2}>
+							{content.name}
+						</Paper>
+					);
+				})}
+			</div>
 		</>
 	);
 }
