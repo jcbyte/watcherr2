@@ -1,67 +1,18 @@
 import { Box, Button, Checkbox, Collapse, FormControlLabel, TextField } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import { DEFAULT_CONTENT } from "../static";
 import { ContentData } from "../types";
 import { deepCopy } from "../utils";
 
-export default function DialogContent({
-	initialDialogData,
-	dialogOpen,
-	saveDialog,
-	closeDialog,
-}: {
-	initialDialogData: ContentData | undefined;
-	dialogOpen: boolean;
-	saveDialog: any;
-	closeDialog: any;
-}) {
-	const [dialogData, setDialogData] = React.useState<ContentData>(initialDialogData ?? deepCopy(DEFAULT_CONTENT));
-
-	useEffect(() => {
-		if (dialogOpen) {
-			setDialogData(initialDialogData ?? deepCopy(DEFAULT_CONTENT));
-		}
-	}, [dialogOpen]);
-
-	function handleNameChange(newName: string) {
-		// var newDialogData = { ...dialogData };
-		// newDialogData.name = newName;
-		// setDialogData(newDialogData);
-	}
-
-	function handleLinkChange(newLink: string) {
-		// var newDialogData = { ...dialogData };
-		// newDialogData.link = newLink;
-		// setDialogData(newDialogData);
-	}
-
-	function handleSeriesChange(newSeries: boolean) {
-		// var newDialogData = { ...dialogData };
-		// newDialogData.type = newSeries ? "Series" : "Film";
-		// if (newSeries) newDialogData.mediaData = { ...newDialogData.mediaData, season: 1, episode: 1 };
-		// setDialogData(newDialogData);
-	}
-
-	function handleSeriesSeasonChange(newSeason: number) {
-		// var newDialogData = { ...dialogData };
-		// newDialogData.mediaData.season = newSeason;
-		// setDialogData(newDialogData);
-	}
-
-	function handleSeriesEpisodeChange(newEpisode: number) {
-		// var newDialogData = { ...dialogData };
-		// newDialogData.mediaData.episode = newEpisode;
-		// setDialogData(newDialogData);
-	}
+export default function DialogContent({}: {}) {
+	const [dialogData, setDialogData] = React.useState<ContentData>(deepCopy(DEFAULT_CONTENT));
 
 	return (
 		<>
 			<Box sx={{ display: "flex", flexDirection: "column" }}>
 				<TextField
 					value={dialogData.name}
-					onChange={(e) => {
-						handleNameChange(e.target.value);
-					}}
+					onChange={(e) => {}}
 					variant="outlined"
 					type="text"
 					label="Title"
@@ -70,9 +21,7 @@ export default function DialogContent({
 				/>
 				<TextField
 					value={dialogData.link}
-					onChange={(e) => {
-						handleLinkChange(e.target.value);
-					}}
+					onChange={(e) => {}}
 					variant="outlined"
 					type="url"
 					label="Link"
@@ -80,19 +29,13 @@ export default function DialogContent({
 				/>
 				<Box sx={{ display: "flex", alignItems: "center", height: "64px" }}>
 					<FormControlLabel
-						control={
-							<Checkbox
-								checked={dialogData.type == "Show"}
-								onChange={(e) => handleSeriesChange(e.target.checked)}
-								color="secondary"
-							/>
-						}
+						control={<Checkbox checked={dialogData.type == "Show"} onChange={(e) => {}} color="secondary" />}
 						label="Series"
 					/>
 					<Collapse in={dialogData.type == "Show"}>
 						<TextField
 							value={dialogData.type == "Show" ? dialogData.season : 0} // TODO Can this be done better
-							onChange={(e) => handleSeriesSeasonChange(e.target.value as unknown as number)}
+							onChange={(e) => {}}
 							type="number"
 							variant="standard"
 							label="Season"
@@ -101,7 +44,7 @@ export default function DialogContent({
 						/>
 						<TextField
 							value={dialogData.type == "Show" ? dialogData.episode : 0} // TODO Can this be done better
-							onChange={(e) => handleSeriesEpisodeChange(e.target.value as unknown as number)}
+							onChange={(e) => {}}
 							type="number"
 							variant="standard"
 							label="Episode"
@@ -111,16 +54,10 @@ export default function DialogContent({
 					</Collapse>
 				</Box>
 				<Box sx={{ display: "flex", gap: "10px" }}>
-					<Button variant="outlined" sx={{ flexBasis: "100%" }} color="warning" onClick={closeDialog}>
+					<Button variant="outlined" sx={{ flexBasis: "100%" }} color="warning" onClick={() => {}}>
 						Cancel
 					</Button>
-					<Button
-						variant="contained"
-						sx={{ flexBasis: "100%" }}
-						onClick={() => {
-							saveDialog(dialogData);
-						}}
-					>
+					<Button variant="contained" sx={{ flexBasis: "100%" }} onClick={() => {}}>
 						Save
 					</Button>
 				</Box>

@@ -5,38 +5,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Button, Grow, IconButton } from "@mui/material";
 import { ContentData } from "../types";
 
-export default function ContentListItem({
-	content,
-	showDialog,
-	updateContent,
-	deleteContent,
-}: {
-	content: ContentData;
-	showDialog: any;
-	updateContent: any;
-	deleteContent: any;
-}) {
-	function nextSeason() {
-		var newMedia = { ...content };
-
-		if (newMedia.type == "Film") return; // TODO
-
-		newMedia.season += 1;
-		newMedia.episode = 1;
-
-		updateContent(newMedia);
-	}
-
-	function nextEpisode() {
-		var newMedia = { ...content };
-
-		if (newMedia.type == "Film") return; // TODO
-
-		newMedia.episode += 1;
-
-		updateContent(newMedia);
-	}
-
+export default function ContentListItem({ content }: { content: ContentData }) {
 	return (
 		<>
 			<Grow in={true} mountOnEnter>
@@ -59,13 +28,7 @@ export default function ContentListItem({
 					>
 						{content.name}
 					</Box>
-					<IconButton
-						className="smallButton"
-						sx={{ color: "#848484", alignSelf: "end" }}
-						onClick={() => {
-							showDialog(content);
-						}}
-					>
+					<IconButton className="smallButton" sx={{ color: "#848484", alignSelf: "end" }} onClick={() => {}}>
 						<EditIcon fontSize="inherit" />
 					</IconButton>
 					{content.type == "Show" ? (
@@ -88,10 +51,10 @@ export default function ContentListItem({
 								<Box sx={{ fontSize: "18px" }}>S{content.season}</Box>
 								<Box sx={{ fontSize: "18px" }}>E{content.episode}</Box>
 							</Box>
-							<Button className="bigButton" variant="contained" color="info" sx={{ mr: "4px" }} onClick={nextEpisode}>
+							<Button className="bigButton" variant="contained" color="info" sx={{ mr: "4px" }}>
 								<AddIcon fontSize="inherit" />
 							</Button>
-							<Button className="bigButton" variant="contained" color="info" onClick={nextSeason}>
+							<Button className="bigButton" variant="contained" color="info">
 								<NavigateNextIcon fontSize="inherit" />
 							</Button>
 						</>
@@ -99,14 +62,7 @@ export default function ContentListItem({
 						<></>
 					)}
 					<Box sx={{ flex: 1 }}></Box>
-					<Button
-						className="bigButton"
-						variant="contained"
-						color="warning"
-						onClick={() => {
-							deleteContent(content);
-						}}
-					>
+					<Button className="bigButton" variant="contained" color="warning" onClick={() => {}}>
 						<DeleteOutlineIcon fontSize="inherit" />
 					</Button>
 				</Box>
