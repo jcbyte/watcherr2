@@ -9,7 +9,7 @@ export default function DialogContent({}: {}) {
 
 	return (
 		<>
-			<Box sx={{ display: "flex", flexDirection: "column" }}>
+			<div className="flex flex-col p-2">
 				<TextField
 					value={dialogData.name}
 					onChange={(e) => {}}
@@ -61,7 +61,7 @@ export default function DialogContent({}: {}) {
 						Save
 					</Button>
 				</Box>
-			</Box>
+			</div>
 		</>
 	);
 }
