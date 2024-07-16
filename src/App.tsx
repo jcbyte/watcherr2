@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
 import ContentListItem from "./components/ContentListItem";
 import Signature from "./components/Signature";
-import { DEFAULT_CONTENT } from "./static";
 import { ContentData } from "./types";
 
 // TODO sync tailwind and mui themes and remove any constant colours
@@ -31,13 +30,19 @@ export default function App() {
 		setContentListLoaded(true);
 	}
 
-	// Opens the dialog and stores which element opened this (-1: new)
+	// Opens the dialog and stores which item this is referencing (-1: new)
 	function openDialog(openFor: number) {
-		setDialogFor(dialogFor);
+		setDialogFor(openFor);
 		setDialogOpen(true);
 	}
 
+	// Update the dialogFor with the new content or create a new item
 	function saveDialogChanges(newContent: ContentData) {
+		console.log("// TODO");
+	}
+
+	// Delete the item
+	function deleteContent(contentIndex: number) {
 		console.log("// TODO");
 	}
 
@@ -56,6 +61,9 @@ export default function App() {
 									content={content}
 									openDialog={() => {
 										openDialog(i);
+									}}
+									deleteItem={() => {
+										deleteContent(i);
 									}}
 								/>
 							);
@@ -82,7 +90,8 @@ export default function App() {
 					setDialogOpen(false);
 				}}
 				saveDialogChanges={saveDialogChanges}
-				initialDialogContent={dialogFor >= 0 ? contentList[dialogFor] : DEFAULT_CONTENT}
+				dialogFor={dialogFor}
+				contentList={contentList}
 			/>
 
 			{/* // TODO this can be in separate component in future

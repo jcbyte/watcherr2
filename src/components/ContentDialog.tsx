@@ -1,6 +1,7 @@
 import { Button, Checkbox, Collapse, Dialog, FormControlLabel, Slide, TextField } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
-import React from "react";
+import React, { useEffect } from "react";
+import { DEFAULT_CONTENT } from "../static";
 import { ContentData } from "../types";
 
 const DialogTransition = React.forwardRef(function Transition(
@@ -16,14 +17,20 @@ export default function ContentDialog({
 	dialogOpen,
 	closeDialog,
 	saveDialogChanges,
-	initialDialogContent,
+	dialogFor,
+	contentList,
 }: {
 	dialogOpen: boolean;
 	closeDialog: () => void;
 	saveDialogChanges: (contentData: ContentData) => void;
-	initialDialogContent: ContentData;
+	dialogFor: number;
+	contentList: ContentData[];
 }) {
-	const [workingContentData, setWorkingContentData] = React.useState<ContentData>(initialDialogContent);
+	const [workingContentData, setWorkingContentData] = React.useState<ContentData>(DEFAULT_CONTENT);
+
+	useEffect(() => {
+		setWorkingContentData(dialogFor > 0 ? contentList[dialogFor] : DEFAULT_CONTENT);
+	}, [dialogFor]);
 
 	return (
 		<>

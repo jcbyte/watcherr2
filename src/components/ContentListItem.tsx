@@ -5,7 +5,15 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Button, Grow, IconButton } from "@mui/material";
 import { ContentData } from "../types";
 
-export default function ContentListItem({ content, openDialog }: { content: ContentData; openDialog: () => void }) {
+export default function ContentListItem({
+	content,
+	openDialog,
+	deleteItem,
+}: {
+	content: ContentData;
+	openDialog: () => void;
+	deleteItem: () => void;
+}) {
 	return (
 		<>
 			<Grow in={true} mountOnEnter>
@@ -21,9 +29,11 @@ export default function ContentListItem({ content, openDialog }: { content: Cont
 					>
 						{content.name}
 					</span>
+
 					<IconButton className="h-4 w-4 !-ml-3 !text-sm self-end !text-[#848484]" onClick={openDialog}>
 						<EditIcon fontSize="inherit" />
 					</IconButton>
+
 					{content.type == "Show" && (
 						<div className="flex gap-1">
 							<div className="bg-[#5c408f] flex items-center gap-1 h-8 px-2 drop-shadow-md rounded">
@@ -31,6 +41,7 @@ export default function ContentListItem({ content, openDialog }: { content: Cont
 								<span className="text-lg">E{content.episode}</span>
 							</div>
 
+							{/* // TODO these buttons */}
 							<Button className="h-8 !min-w-8 w-8" variant="contained" color="info">
 								<AddIcon fontSize="small" />
 							</Button>
@@ -40,7 +51,7 @@ export default function ContentListItem({ content, openDialog }: { content: Cont
 						</div>
 					)}
 					<span className="grow" />
-					<Button className="h-8 !min-w-8 w-8" variant="contained" color="warning">
+					<Button className="h-8 !min-w-8 w-8" variant="contained" color="warning" onClick={deleteItem}>
 						<DeleteOutlineIcon fontSize="small" />
 					</Button>
 				</div>
