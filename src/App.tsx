@@ -1,31 +1,24 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Box, Button, CircularProgress, Dialog, Slide } from "@mui/material";
-import { TransitionProps } from "@mui/material/transitions";
-import React, { useEffect, useState } from "react";
+import { Button, CircularProgress } from "@mui/material";
+import { useEffect, useState } from "react";
+import ContentDialog from "./components/ContentDialog";
 import ContentListItem from "./components/ContentListItem";
-import DialogContent from "./components/DialogContent";
 import Signature from "./components/Signature";
+import { DEFAULT_CONTENT } from "./static";
 import { ContentData } from "./types";
-
-const DialogTransition = React.forwardRef(function Transition(
-	props: TransitionProps & {
-		children: React.ReactElement<any, any>;
-	},
-	ref: React.Ref<unknown>
-) {
-	return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export default function App() {
 	const [contentList, setContentList] = useState<ContentData[]>([]);
 	const [contentListLoaded, setContentListLoaded] = useState<boolean>(false);
 
-	const [dialogOpen, setDialogOpen] = useState<boolean>(true);
+	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+	const [dialogFor, setDialogFor] = useState<number>(-1);
 
 	useEffect(() => {
 		loadContent();
 	}, []);
 
+	// Load the content list from external storage // TODO
 	function loadContent() {
 		setContentList([
 			{ type: "Film", name: "film1", link: undefined, time: undefined },
@@ -34,6 +27,16 @@ export default function App() {
 			{ type: "Show", name: "show2", link: "showlink", time: undefined, season: 3, episode: 14 },
 		]);
 		setContentListLoaded(true);
+	}
+
+	// Opens the dialog and stores which element opened this (-1: new)
+	function openDialog(openFor: number) {
+		setDialogFor(dialogFor);
+		setDialogOpen(true);
+	}
+
+	function saveDialogChanges(newContent: ContentData) {
+		console.log("// TODO");
 	}
 
 	return (
@@ -48,11 +51,29 @@ export default function App() {
 					})
 				)}
 
-				<Button variant="contained" className="!mt-2" color="info" disabled={!contentListLoaded}>
+				<Button
+					variant="contained"
+					className="!mt-2"
+					color="info"
+					disabled={!contentListLoaded}
+					onClick={() => {
+						openDialog(-1);
+					}}
+				>
 					<AddIcon />
 				</Button>
 			</div>
-			<Dialog
+
+			<ContentDialog
+				dialogOpen={dialogOpen}
+				closeDialog={() => {
+					setDialogOpen(false);
+				}}
+				saveDialogChanges={saveDialogChanges}
+				initialDialogContent={dialogFor >= 0 ? contentList[dialogFor] : DEFAULT_CONTENT}
+			/>
+
+			{/* <Dialog
 				open={dialogOpen}
 				onClose={() => {
 					setDialogOpen(false);
@@ -60,15 +81,16 @@ export default function App() {
 				TransitionComponent={DialogTransition}
 			>
 				<Box bgcolor="#1e1e1e">
-					<DialogContent />
 				</Box>
-			</Dialog>
-			{/* <Box sx={{ position: "absolute", left: "6px", bottom: "2px" }}>
+			</Dialog> */}
+
+			{/* // TODO this can be in separate component in future
+      <Box sx={{ position: "absolute", left: "6px", bottom: "2px" }}> 
 				<IconButton size="large" disabled={!contentListLoaded} onClick={() => {}}>
 					<RefreshIcon />
 				</IconButton>
 			</Box> */}
-			{/* // TODO this can be in separate component in future */}
+
 			<Signature />
 		</>
 	);
