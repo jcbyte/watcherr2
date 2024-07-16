@@ -43,35 +43,37 @@ export default function App() {
 
 	return (
 		<>
-			<div className="flex flex-col align-center gap-2 m-2">
-				<span className="shinyText text-4xl font-medium text-center m-4">Watchrr2</span>
-				{!contentListLoaded ? (
-					<CircularProgress className="block m-auto" />
-				) : (
-					contentList.map((content, i) => {
-						return (
-							<ContentListItem
-								key={i}
-								content={content}
-								openDialog={() => {
-									openDialog(i);
-								}}
-							/>
-						);
-					})
-				)}
+			<div className="max-w-3xl m-auto">
+				<div className="flex flex-col gap-2 m-2">
+					<span className="shinyText text-4xl font-medium text-center m-4">Watchrr2</span>
+					{!contentListLoaded ? (
+						<CircularProgress className="block m-auto" />
+					) : (
+						contentList.map((content, i) => {
+							return (
+								<ContentListItem
+									key={i}
+									content={content}
+									openDialog={() => {
+										openDialog(i);
+									}}
+								/>
+							);
+						})
+					)}
 
-				<Button
-					variant="contained"
-					className="!mt-2"
-					color="info"
-					disabled={!contentListLoaded}
-					onClick={() => {
-						openDialog(-1);
-					}}
-				>
-					<AddIcon />
-				</Button>
+					<Button
+						variant="contained"
+						className="!mt-2"
+						color="info"
+						disabled={!contentListLoaded}
+						onClick={() => {
+							openDialog(-1);
+						}}
+					>
+						<AddIcon />
+					</Button>
+				</div>
 			</div>
 
 			<ContentDialog
