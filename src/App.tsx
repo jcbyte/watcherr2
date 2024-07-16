@@ -7,6 +7,8 @@ import Signature from "./components/Signature";
 import { DEFAULT_CONTENT } from "./static";
 import { ContentData } from "./types";
 
+// TODO sync tailwind and mui themes and remove any constant colours
+
 export default function App() {
 	const [contentList, setContentList] = useState<ContentData[]>([]);
 	const [contentListLoaded, setContentListLoaded] = useState<boolean>(false);
@@ -46,8 +48,16 @@ export default function App() {
 				{!contentListLoaded ? (
 					<CircularProgress className="block m-auto" />
 				) : (
-					contentList.map((v, i) => {
-						return <ContentListItem content={v} key={i} />;
+					contentList.map((content, i) => {
+						return (
+							<ContentListItem
+								key={i}
+								content={content}
+								openDialog={() => {
+									openDialog(i);
+								}}
+							/>
+						);
 					})
 				)}
 
@@ -72,17 +82,6 @@ export default function App() {
 				saveDialogChanges={saveDialogChanges}
 				initialDialogContent={dialogFor >= 0 ? contentList[dialogFor] : DEFAULT_CONTENT}
 			/>
-
-			{/* <Dialog
-				open={dialogOpen}
-				onClose={() => {
-					setDialogOpen(false);
-				}}
-				TransitionComponent={DialogTransition}
-			>
-				<Box bgcolor="#1e1e1e">
-				</Box>
-			</Dialog> */}
 
 			{/* // TODO this can be in separate component in future
       <Box sx={{ position: "absolute", left: "6px", bottom: "2px" }}> 
