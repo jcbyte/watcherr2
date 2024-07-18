@@ -22,10 +22,10 @@ export default function App() {
 	// Load the content list from external storage // TODO
 	function loadContent() {
 		setContentList([
-			{ type: "Film", name: "film1", link: undefined, time: undefined },
-			{ type: "Film", name: "film2", link: "filmlink", time: 4 },
-			{ type: "Show", name: "show1", link: undefined, time: 23, season: 1, episode: 2 },
-			{ type: "Show", name: "show2", link: "showlink", time: undefined, season: 3, episode: 14 },
+			// { type: "Film", name: "film1", link: undefined, time: undefined },
+			// { type: "Film", name: "film2", link: "filmlink", time: 4 },
+			// { type: "Show", name: "show1", link: undefined, time: 23, season: 1, episode: 2 },
+			// { type: "Show", name: "show2", link: "showlink", time: undefined, season: 3, episode: 14 },
 		]);
 		setContentListLoaded(true);
 	}

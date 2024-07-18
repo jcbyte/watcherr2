@@ -68,7 +68,6 @@ export default function ContentDialog({
 								<Checkbox
 									checked={workingContentData.type == "Show"}
 									onChange={(newValue) => {
-										console.log();
 										setWorkingContentData((prev) => {
 											let newWorkingContentData: ContentData = {
 												...prev,
