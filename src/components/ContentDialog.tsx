@@ -29,8 +29,8 @@ export default function ContentDialog({
 	const [workingContentData, setWorkingContentData] = React.useState<ContentData>(DEFAULT_CONTENT);
 
 	useEffect(() => {
-		setWorkingContentData(dialogFor > 0 ? contentList[dialogFor] : DEFAULT_CONTENT);
-	}, [dialogFor]);
+		if (dialogOpen) setWorkingContentData(dialogFor > 0 ? contentList[dialogFor] : DEFAULT_CONTENT);
+	}, [dialogOpen]);
 
 	return (
 		<>
