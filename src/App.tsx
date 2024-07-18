@@ -38,16 +38,27 @@ export default function App() {
 
 	// Update the dialogFor with the new content or create a new item
 	function saveDialogChanges(newContent: ContentData) {
-		console.log("// TODO");
+		setContentList((prev) => {
+			let newContentList = [...prev];
+
+			if (dialogFor < 0) newContentList.push(newContent);
+			else newContentList[dialogFor] = newContent;
+
+			return newContentList;
+		});
+
+		setDialogOpen(false);
 	}
 
 	// Performs the function clicked from the list item
 	function listFunction(action: ListAction, forContent: number) {
 		switch (action) {
+			// Open the dialog prefilling with this tickets details
 			case "edit":
 				openDialog(forContent);
 				break;
 
+			// Increase the episode counter by 1
 			case "episode":
 				setContentList((prev) => {
 					let newContentList = [...prev];
@@ -56,6 +67,7 @@ export default function App() {
 				});
 				break;
 
+			// Increase the season counter by 1 and reset the episode counter to 1
 			case "season":
 				setContentList((prev) => {
 					let newContentList = [...prev];
@@ -65,6 +77,7 @@ export default function App() {
 				});
 				break;
 
+			// Remove the item from the list
 			case "delete":
 				setContentList((prev) => {
 					let newContentList = [...prev];
