@@ -2,9 +2,9 @@ import AddIcon from "@mui/icons-material/Add";
 import { Button, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
-import ContentListItem from "./components/ContentListItem";
+import ContentListItem, { ListAction } from "./components/ContentListItem";
 import Signature from "./components/Signature";
-import { ContentData, ListAction } from "./types";
+import { ContentData } from "./types";
 
 // TODO sync tailwind and mui themes and remove any constant colours
 

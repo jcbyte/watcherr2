@@ -3,7 +3,9 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Button, Grow, IconButton } from "@mui/material";
-import { ContentData, ListAction } from "../types";
+import { ContentData } from "../types";
+
+export type ListAction = "edit" | "episode" | "season" | "delete";
 
 export default function ContentListItem({
 	content,

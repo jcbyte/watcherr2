@@ -8,7 +8,3 @@ export type ContentData = {
 	episode?: number;
 	time?: number;
 };
-
-export type DialogFor = "new" | number;
-
-export type ListAction = "edit" | "episode" | "season" | "delete";
