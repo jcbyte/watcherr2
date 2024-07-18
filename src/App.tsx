@@ -43,7 +43,36 @@ export default function App() {
 
 	// Performs the function clicked from the list item
 	function listFunction(action: ListAction, forContent: number) {
-		console.log(action);
+		switch (action) {
+			case "edit":
+				openDialog(forContent);
+				break;
+
+			case "episode":
+				setContentList((prev) => {
+					let newContentList = [...prev];
+					newContentList[forContent].episode!++;
+					return newContentList;
+				});
+				break;
+
+			case "season":
+				setContentList((prev) => {
+					let newContentList = [...prev];
+					newContentList[forContent].episode! = 1;
+					newContentList[forContent].season!++;
+					return newContentList;
+				});
+				break;
+
+			case "delete":
+				setContentList((prev) => {
+					let newContentList = [...prev];
+					newContentList.splice(forContent, 1);
+					return newContentList;
+				});
+				break;
+		}
 	}
 
 	return (
