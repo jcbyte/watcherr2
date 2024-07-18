@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
 import ContentListItem from "./components/ContentListItem";
 import Signature from "./components/Signature";
-import { ContentData } from "./types";
+import { ContentData, ListAction } from "./types";
 
 // TODO sync tailwind and mui themes and remove any constant colours
 
@@ -41,9 +41,9 @@ export default function App() {
 		console.log("// TODO");
 	}
 
-	// Delete the item
-	function deleteContent(contentIndex: number) {
-		console.log("// TODO");
+	// Performs the function clicked from the list item
+	function listFunction(action: ListAction, forContent: number) {
+		console.log(action);
 	}
 
 	return (
@@ -59,11 +59,8 @@ export default function App() {
 								<ContentListItem
 									key={i}
 									content={content}
-									openDialog={() => {
-										openDialog(i);
-									}}
-									deleteItem={() => {
-										deleteContent(i);
+									listFunction={(action: ListAction) => {
+										listFunction(action, i);
 									}}
 								/>
 							);

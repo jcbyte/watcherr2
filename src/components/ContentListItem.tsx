@@ -3,16 +3,14 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Button, Grow, IconButton } from "@mui/material";
-import { ContentData } from "../types";
+import { ContentData, ListAction } from "../types";
 
 export default function ContentListItem({
 	content,
-	openDialog,
-	deleteItem,
+	listFunction,
 }: {
 	content: ContentData;
-	openDialog: () => void;
-	deleteItem: () => void;
+	listFunction: (action: ListAction) => void;
 }) {
 	return (
 		<>
@@ -30,7 +28,12 @@ export default function ContentListItem({
 						{content.name}
 					</span>
 
-					<IconButton className="h-4 w-4 !-ml-3 !text-sm self-end !text-[#848484]" onClick={openDialog}>
+					<IconButton
+						className="h-4 w-4 !-ml-3 !text-sm self-end !text-[#848484]"
+						onClick={() => {
+							listFunction("edit");
+						}}
+					>
 						<EditIcon fontSize="inherit" />
 					</IconButton>
 
@@ -41,17 +44,37 @@ export default function ContentListItem({
 								<span className="text-lg">E{content.episode}</span>
 							</div>
 
-							{/* // TODO these buttons */}
-							<Button className="h-8 !min-w-8 w-8" variant="contained" color="info">
+							<Button
+								className="h-8 !min-w-8 w-8"
+								variant="contained"
+								color="info"
+								onClick={() => {
+									listFunction("episode");
+								}}
+							>
 								<AddIcon fontSize="small" />
 							</Button>
-							<Button className="h-8 !min-w-8 w-8" variant="contained" color="info">
+							<Button
+								className="h-8 !min-w-8 w-8"
+								variant="contained"
+								color="info"
+								onClick={() => {
+									listFunction("season");
+								}}
+							>
 								<NavigateNextIcon fontSize="small" />
 							</Button>
 						</div>
 					)}
 					<span className="grow" />
-					<Button className="h-8 !min-w-8 w-8" variant="contained" color="warning" onClick={deleteItem}>
+					<Button
+						className="h-8 !min-w-8 w-8"
+						variant="contained"
+						color="warning"
+						onClick={() => {
+							listFunction("delete");
+						}}
+					>
 						<DeleteOutlineIcon fontSize="small" />
 					</Button>
 				</div>

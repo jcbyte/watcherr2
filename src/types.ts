@@ -10,3 +10,5 @@ export type ContentData = {
 };
 
 export type DialogFor = "new" | number;
+
+export type ListAction = "edit" | "episode" | "season" | "delete";
