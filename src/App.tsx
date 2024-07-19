@@ -1,6 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
 import Signature from "./components/Signature";
@@ -13,6 +13,7 @@ export default function App() {
 	const [dataStorage, setDataStorage] = useState<DataStorage>(new LocalDataStorage());
 
 	const [contentList, setContentList] = useState<ContentData[]>([]);
+	const contentListLoaded = useRef<boolean>(false);
 
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 	const [dialogFor, setDialogFor] = useState<number>(-1);
@@ -21,13 +22,13 @@ export default function App() {
 	useEffect(() => {
 		dataStorage.getContentList().then((data) => {
 			setContentList(data);
+			contentListLoaded.current = true;
 		});
 	}, []);
 
 	// Save the content list to the external storage whenever it is modified
-	// TODO this should not be called before the data has been loaded
 	useEffect(() => {
-		dataStorage.setContentList(contentList);
+		if (contentListLoaded.current) dataStorage.setContentList(contentList);
 	}, [contentList]);
 
 	// Opens the dialog and stores which item this is referencing (-1: new)
