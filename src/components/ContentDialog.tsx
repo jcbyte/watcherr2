@@ -3,6 +3,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import React, { useEffect } from "react";
 import { DEFAULT_CONTENT } from "../static";
 import { ContentData } from "../types";
+import { validateContentData } from "../utils";
 
 const DialogTransition = React.forwardRef(function Transition(
 	props: TransitionProps & {
@@ -123,7 +124,7 @@ export default function ContentDialog({
 							variant="contained"
 							className="basis-full"
 							onClick={() => {
-								saveDialogChanges(workingContentData);
+								if (validateContentData(workingContentData)) saveDialogChanges(workingContentData);
 							}}
 							color="primary"
 						>
