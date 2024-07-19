@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* // TODO Update this title effect */
 .shinyText {
-	background: linear-gradient(-225deg, #dcdcdc 0%, #b29fd5 10%, #dcdcdc 100%);
+	background: linear-gradient(145deg, #dcdcdc 40%, #ac72ff 80%, #dcdcdc 100%);
 	background-clip: border-box;
 	background-size: 200% auto;
 	color: #fff;
@@ -12,7 +11,7 @@
 	text-fill-color: transparent;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
-	animation: textclip 3000ms linear infinite;
+	animation: textclip 4000ms linear infinite;
 }
 
 @keyframes textclip {
