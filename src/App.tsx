@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
 import Signature from "./components/Signature";
+import { LocalDataStorage } from "./dataStorage/DataStorage";
 import { ContentData } from "./types";
 
 // TODO sync tailwind and mui themes and remove any constant colours
+
+const dataStorage = new LocalDataStorage();
 
 export default function App() {
 	const [contentList, setContentList] = useState<ContentData[]>([]);
@@ -15,20 +18,18 @@ export default function App() {
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 	const [dialogFor, setDialogFor] = useState<number>(-1);
 
+	// Load the content list from external storage
 	useEffect(() => {
-		loadContent();
+		dataStorage.getContentList().then((data) => {
+			setContentList(data);
+			setContentListLoaded(true);
+		});
 	}, []);
 
-	// Load the content list from external storage // TODO
-	function loadContent() {
-		setContentList([
-			// { type: "Film", name: "film1", link: undefined, time: undefined },
-			// { type: "Film", name: "film2", link: "filmlink", time: 4 },
-			// { type: "Show", name: "show1", link: undefined, time: 23, season: 1, episode: 2 },
-			// { type: "Show", name: "show2", link: "showlink", time: undefined, season: 3, episode: 14 },
-		]);
-		setContentListLoaded(true);
-	}
+	// Save the content list to the external storage whenever it is modified
+	useEffect(() => {
+		if (contentListLoaded) dataStorage.setContentList(contentList);
+	}, [contentList]);
 
 	// Opens the dialog and stores which item this is referencing (-1: new)
 	function openDialog(openFor: number) {
