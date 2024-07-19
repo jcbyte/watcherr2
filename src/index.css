@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* // TODO Update this title effect */
 .shinyText {
 	background: linear-gradient(-225deg, #dcdcdc 0%, #b29fd5 10%, #dcdcdc 100%);
 	background-clip: border-box;
