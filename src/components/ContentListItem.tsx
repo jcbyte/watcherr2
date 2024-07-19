@@ -17,7 +17,7 @@ export default function ContentListItem({
 	return (
 		<>
 			<Grow in={true} mountOnEnter>
-				<div className="bg-[#333333] flex gap-2 items-center p-2 drop-shadow-md rounded w-full">
+				<div className="bg-item-background flex gap-2 items-center p-2 drop-shadow-md rounded w-full">
 					<span
 						className="text-xl whitespace-nowrap"
 						style={{ cursor: content.link ? "pointer" : "auto" }}
@@ -31,7 +31,7 @@ export default function ContentListItem({
 					</span>
 
 					<IconButton
-						className="h-4 w-4 !-ml-3 !text-sm self-end !text-[#848484]"
+						className="h-4 w-4 !-ml-3 !text-sm self-end !text-zinc-500"
 						onClick={() => {
 							listFunction("edit");
 						}}
@@ -41,7 +41,7 @@ export default function ContentListItem({
 
 					{content.type === "Show" && (
 						<div className="flex gap-1">
-							<div className="bg-[#5c408f] flex items-center gap-1 h-8 px-2 drop-shadow-md rounded">
+							<div className="bg-purple-dark flex items-center gap-1 h-8 px-2 drop-shadow-md rounded">
 								<span className="text-lg">S{content.season}</span>
 								<span className="text-lg">E{content.episode}</span>
 							</div>

@@ -7,8 +7,6 @@ import Signature from "./components/Signature";
 import { DataStorage, LocalDataStorage } from "./dataStorage/DataStorage";
 import { ContentData } from "./types";
 
-// TODO sync tailwind and mui themes and remove any constant colours
-
 export default function App() {
 	const [dataStorage, setDataStorage] = useState<DataStorage>(new LocalDataStorage());
 

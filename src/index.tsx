@@ -7,30 +7,25 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
+import { COLORS } from "./theme";
 
 const theme = createTheme({
 	palette: {
 		mode: "dark",
 		primary: {
-			main: "#5c408f",
+			main: COLORS["purple-dark"],
 		},
 		secondary: {
-			main: "#ac72ff",
+			main: COLORS["purple-light"],
 		},
 		warning: {
-			main: "#bc413e",
+			main: COLORS.warning,
 		},
 		info: {
-			main: "#4c4c4c",
+			main: COLORS.button,
 		},
 		background: {
-			default: "#1e1e1e",
-			paper: "#1e1e1e",
-		},
-		text: {
-			primary: "#dcdcdc",
-			secondary: "rgba(220,220,220,0.7)",
-			disabled: "rgba(220,220,220,0.5)",
+			default: COLORS.background,
 		},
 	},
 });

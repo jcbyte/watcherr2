@@ -35,7 +35,7 @@ export default function ContentDialog({
 	return (
 		<>
 			<Dialog open={dialogOpen} onClose={closeDialog} TransitionComponent={DialogTransition} fullWidth>
-				<div className="bg-[#1e1e1e] flex flex-col p-2 gap-2">
+				<div className="bg-background flex flex-col p-2 gap-2">
 					<TextField
 						value={workingContentData.name}
 						onChange={(newValue) => {
@@ -125,6 +125,7 @@ export default function ContentDialog({
 							onClick={() => {
 								saveDialogChanges(workingContentData);
 							}}
+							color="primary"
 						>
 							Save
 						</Button>
