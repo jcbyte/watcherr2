@@ -1,5 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Button, CircularProgress } from "@mui/material";
+import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
@@ -13,7 +13,6 @@ const dataStorage = new LocalDataStorage();
 
 export default function App() {
 	const [contentList, setContentList] = useState<ContentData[]>([]);
-	const [contentListLoaded, setContentListLoaded] = useState<boolean>(false);
 
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 	const [dialogFor, setDialogFor] = useState<number>(-1);
@@ -22,13 +21,13 @@ export default function App() {
 	useEffect(() => {
 		dataStorage.getContentList().then((data) => {
 			setContentList(data);
-			setContentListLoaded(true);
 		});
 	}, []);
 
 	// Save the content list to the external storage whenever it is modified
+	// TODO this should not be called whilst the data is being loaded
 	useEffect(() => {
-		if (contentListLoaded) dataStorage.setContentList(contentList);
+		dataStorage.setContentList(contentList);
 	}, [contentList]);
 
 	// Opens the dialog and stores which item this is referencing (-1: new)
@@ -94,27 +93,22 @@ export default function App() {
 			<div className="max-w-3xl m-auto">
 				<div className="flex flex-col gap-2 m-2">
 					<span className="shinyText text-4xl font-medium text-center m-4">Watchrr2</span>
-					{!contentListLoaded ? (
-						<CircularProgress className="block m-auto" />
-					) : (
-						contentList.map((content, i) => {
-							return (
-								<ContentListItem
-									key={i}
-									content={content}
-									listFunction={(action: ListAction) => {
-										listFunction(action, i);
-									}}
-								/>
-							);
-						})
-					)}
+					{contentList.map((content, i) => {
+						return (
+							<ContentListItem
+								key={i}
+								content={content}
+								listFunction={(action: ListAction) => {
+									listFunction(action, i);
+								}}
+							/>
+						);
+					})}
 
 					<Button
 						variant="contained"
 						className="!mt-2"
 						color="info"
-						disabled={!contentListLoaded}
 						onClick={() => {
 							openDialog(-1);
 						}}
