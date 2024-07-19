@@ -4,15 +4,14 @@ import { useEffect, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
 import Signature from "./components/Signature";
-import { LocalDataStorage } from "./dataStorage/DataStorage";
+import { DataStorage, LocalDataStorage } from "./dataStorage/DataStorage";
 import { ContentData } from "./types";
 
 // TODO sync tailwind and mui themes and remove any constant colours
 
-// TODO this needs to be abstract class so that it can be set to whichever data location
-const dataStorage = new LocalDataStorage();
-
 export default function App() {
+	const [dataStorage, setDataStorage] = useState<DataStorage>(new LocalDataStorage());
+
 	const [contentList, setContentList] = useState<ContentData[]>([]);
 
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -26,7 +25,7 @@ export default function App() {
 	}, []);
 
 	// Save the content list to the external storage whenever it is modified
-	// TODO this should not be called whilst the data is being loaded
+	// TODO this should not be called before the data has been loaded
 	useEffect(() => {
 		dataStorage.setContentList(contentList);
 	}, [contentList]);
