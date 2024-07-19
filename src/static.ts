@@ -1,6 +1,6 @@
 import { ContentData } from "./types";
 
-export const VERSION = "v0.2";
+export const VERSION = "v1.0";
 
 export const DEFAULT_CONTENT: ContentData = {
 	type: "Film",
