@@ -9,6 +9,7 @@ import { ContentData } from "./types";
 
 // TODO sync tailwind and mui themes and remove any constant colours
 
+// TODO this needs to be abstract class so that it can be set to whichever data location
 const dataStorage = new LocalDataStorage();
 
 export default function App() {

@@ -66,7 +66,7 @@ export default function ContentDialog({
 						<FormControlLabel
 							control={
 								<Checkbox
-									checked={workingContentData.type == "Show"}
+									checked={workingContentData.type === "Show"}
 									onChange={(newValue) => {
 										setWorkingContentData((prev) => {
 											let newWorkingContentData: ContentData = {
@@ -84,7 +84,7 @@ export default function ContentDialog({
 							}
 							label="Series"
 						/>
-						<Collapse in={workingContentData.type == "Show"}>
+						<Collapse in={workingContentData.type === "Show"}>
 							<TextField
 								value={workingContentData.season ?? 0}
 								onChange={(newValue) => {

@@ -39,7 +39,7 @@ export default function ContentListItem({
 						<EditIcon fontSize="inherit" />
 					</IconButton>
 
-					{content.type == "Show" && (
+					{content.type === "Show" && (
 						<div className="flex gap-1">
 							<div className="bg-[#5c408f] flex items-center gap-1 h-8 px-2 drop-shadow-md rounded">
 								<span className="text-lg">S{content.season}</span>
