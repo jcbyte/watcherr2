@@ -1,6 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Button } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import { Button, IconButton } from "@mui/material";
+import { useEffect, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
 import Signature from "./components/Signature";
@@ -11,22 +12,28 @@ export default function App() {
 	const [dataStorage, setDataStorage] = useState<DataStorage>(new LocalDataStorage());
 
 	const [contentList, setContentList] = useState<ContentData[]>([]);
-	const contentListLoaded = useRef<boolean>(false);
+	const [contentListLoaded, setContentListLoaded] = useState<boolean>(false);
 
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 	const [dialogFor, setDialogFor] = useState<number>(-1);
 
 	// Load the content list from external storage
-	useEffect(() => {
+	function loadContentList() {
+		setContentListLoaded(false);
 		dataStorage.getContentList().then((data) => {
 			setContentList(data);
-			contentListLoaded.current = true;
+			setContentListLoaded(true);
 		});
+	}
+
+	// On app load, then get the contents list
+	useEffect(() => {
+		loadContentList();
 	}, []);
 
 	// Save the content list to the external storage whenever it is modified
 	useEffect(() => {
-		if (contentListLoaded.current) dataStorage.setContentList(contentList);
+		if (contentListLoaded) dataStorage.setContentList(contentList);
 	}, [contentList]);
 
 	// Opens the dialog and stores which item this is referencing (-1: new)
@@ -127,12 +134,11 @@ export default function App() {
 				contentList={contentList}
 			/>
 
-			{/* // TODO this can be in separate component in future
-      <Box sx={{ position: "absolute", left: "6px", bottom: "2px" }}> 
-				<IconButton size="large" disabled={!contentListLoaded} onClick={() => {}}>
+			<div className="fixed left-1 bottom-1">
+				<IconButton size="large" disabled={!contentListLoaded} onClick={loadContentList}>
 					<RefreshIcon />
 				</IconButton>
-			</Box> */}
+			</div>
 
 			<Signature />
 		</>
