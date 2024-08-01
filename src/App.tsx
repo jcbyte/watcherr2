@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
 import Signature from "./components/Signature";
-import { DataStorage, LocalDataStorage } from "./dataStorage/DataStorage";
+import { DataStorage, dataStorageRef } from "./dataStorage/DataStorage";
 import { ContentData } from "./types";
 
 export default function App() {
-	const [dataStorage, setDataStorage] = useState<DataStorage>(new LocalDataStorage());
+	const [dataStorage, setDataStorage] = useState<DataStorage>(new dataStorageRef.local());
 
 	const [contentList, setContentList] = useState<ContentData[]>([]);
 	const [contentListLoaded, setContentListLoaded] = useState<boolean>(false);
