@@ -3,12 +3,15 @@ import { useState } from "react";
 
 import GoogleIcon from "@mui/icons-material/Google";
 import PersonIcon from "@mui/icons-material/Person";
+import { auth, signInFirebaseGoogle, signOutFirebase } from "../firestore/firebase";
 import { DataStorageLocations } from "../types";
 
 export default function UserSelection({
 	setStorageLocation,
+	isAuthed,
 }: {
 	setStorageLocation: (storageLocation: DataStorageLocations) => void;
+	isAuthed: boolean;
 }) {
 	// TODO should not be set as local always on mount
 	const [selectedOption, setSelectedOption] = useState(1);
@@ -30,14 +33,14 @@ export default function UserSelection({
 					return (
 						<>
 							<GoogleIcon />
-							Joel Cutler
+							{auth.currentUser?.displayName}
 						</>
 					);
 				else
 					return (
 						<>
 							<GoogleIcon />
-							Sign Out
+							{isAuthed ? "Sign Out" : "Sign In"}
 						</>
 					);
 		}
@@ -45,7 +48,17 @@ export default function UserSelection({
 
 	function menuItemSelected(index: number) {
 		setSelectedOption(index);
-		setStorageLocation(validOptions[index]);
+		let selectedStorageLocation: DataStorageLocations = validOptions[index];
+		setStorageLocation(selectedStorageLocation);
+
+		switch (selectedStorageLocation) {
+			case "firestore":
+				if (isAuthed) {
+					signOutFirebase();
+				} else {
+					signInFirebaseGoogle();
+				}
+		}
 	}
 
 	return (

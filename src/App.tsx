@@ -21,6 +21,7 @@ export default function App() {
 	const [dialogFor, setDialogFor] = useState<number>(-1);
 
 	const [firebaseReady, setFirebaseReady] = useState<boolean>(false);
+	const [isAuthed, setIsAuthed] = useState<boolean>(false);
 
 	// Load the content list from external storage
 	function loadContentList() {
@@ -44,7 +45,11 @@ export default function App() {
 
 		// Function to run when firebase auth change (user signs in/out)
 		auth.onAuthStateChanged((user) => {
-			console.log(user);
+			if (user) {
+				setIsAuthed(true);
+			} else {
+				setIsAuthed(false);
+			}
 		});
 	}, []);
 
@@ -114,7 +119,7 @@ export default function App() {
 	return (
 		<>
 			<div className="absolute top-2 right-2">
-				<UserSelection setStorageLocation={() => {}} />
+				<UserSelection setStorageLocation={() => {}} isAuthed={isAuthed} />
 			</div>
 
 			<div className="max-w-3xl m-auto">
