@@ -1,4 +1,4 @@
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 
 import GoogleIcon from "@mui/icons-material/Google";
@@ -13,51 +13,88 @@ export default function UserSelection({
 	setStorageLocation: (storageLocation: DataStorageLocations) => void;
 	isAuthed: boolean;
 }) {
-	// TODO should not be set as local always on mount
-	const [selectedOption, setSelectedOption] = useState(1);
+	const [selectedOption, setSelectedOption] = useState<DataStorageLocations | null>(null);
 	const [menuOpen, setMenuOpen] = useState<Boolean>(false);
 	const [anchorEl, setAnchorEl] = useState<HTMLElement>();
 
 	const validOptions: DataStorageLocations[] = ["local", "firestore"];
-	function getOptionDisplay(location: DataStorageLocations, type: "shown" | "menu"): JSX.Element {
-		switch (location) {
-			case "local":
-				return (
-					<>
-						<PersonIcon />
-						Guest
-					</>
-				);
-			case "firestore":
-				if (type === "shown")
+	function getOptionDisplay(location: DataStorageLocations | null, type: "shown" | "menu"): JSX.Element {
+		function getOptionPartDisplay(): JSX.Element {
+			switch (location) {
+				case "local":
 					return (
 						<>
-							<GoogleIcon />
-							{auth.currentUser?.displayName}
+							<PersonIcon />
+							<span>Guest</span>
 						</>
 					);
-				else
-					return (
-						<>
-							<GoogleIcon />
-							{isAuthed ? "Sign Out" : "Sign In"}
-						</>
-					);
+
+				case "firestore":
+					if (type === "shown") {
+						return (
+							<>
+								<Avatar src={auth.currentUser?.photoURL ?? ""} className="!size-6" />
+								<span>{auth.currentUser?.displayName}</span>
+							</>
+						);
+					} else {
+						if (isAuthed) {
+							if (selectedOption !== "firestore") {
+								return (
+									<>
+										<Avatar src={auth.currentUser?.photoURL ?? ""} className="!size-6" />
+										<span>{auth.currentUser?.displayName}</span>
+									</>
+								);
+							} else {
+								return (
+									<>
+										<GoogleIcon />
+										<span>Sign Out</span>
+									</>
+								);
+							}
+						} else {
+							return (
+								<>
+									<GoogleIcon />
+									<span>Sign In</span>
+								</>
+							);
+						}
+					}
+
+				default:
+					return <>null</>;
+			}
 		}
+
+		return <div className="flex gap-2">{getOptionPartDisplay()}</div>;
 	}
 
-	function menuItemSelected(index: number) {
-		setSelectedOption(index);
-		let selectedStorageLocation: DataStorageLocations = validOptions[index];
-		setStorageLocation(selectedStorageLocation);
-
+	// ? this switch is very similar to the above is there a way to combine these into a single? or would this even make sense?
+	function menuItemSelected(selectedStorageLocation: DataStorageLocations) {
 		switch (selectedStorageLocation) {
+			case "local":
+				setSelectedOption(selectedStorageLocation);
+				setStorageLocation(selectedStorageLocation);
+				break;
+
 			case "firestore":
 				if (isAuthed) {
-					signOutFirebase();
+					if (selectedOption !== "firestore") {
+						setSelectedOption(selectedStorageLocation);
+						setStorageLocation(selectedStorageLocation);
+					} else {
+						signOutFirebase();
+						setSelectedOption(null);
+					}
 				} else {
 					signInFirebaseGoogle();
+					setSelectedOption(selectedStorageLocation);
+					setStorageLocation(selectedStorageLocation);
 				}
+				break;
 		}
 	}
 
@@ -72,7 +109,7 @@ export default function UserSelection({
 					setAnchorEl(ref as HTMLButtonElement);
 				}}
 			>
-				{getOptionDisplay(validOptions[selectedOption], "shown")}
+				{getOptionDisplay(selectedOption, "shown")}
 			</Button>
 			<Menu
 				anchorEl={anchorEl}
@@ -86,7 +123,7 @@ export default function UserSelection({
 						key={index}
 						// selected={index === selectedIndex}
 						onClick={(e) => {
-							menuItemSelected(index);
+							menuItemSelected(validOptions[index]);
 							setMenuOpen(false);
 						}}
 					>
