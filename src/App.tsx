@@ -19,6 +19,8 @@ export default function App() {
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 	const [dialogFor, setDialogFor] = useState<number>(-1);
 
+	const [firebaseReady, setFirebaseReady] = useState<boolean>(false);
+
 	// Load the content list from external storage
 	function loadContentList() {
 		setContentListLoaded(false);
@@ -36,7 +38,7 @@ export default function App() {
 	useEffect(() => {
 		// Once firebase service is loaded the flag is set
 		auth.authStateReady().then(() => {
-			// setFirebaseReady(true);
+			setFirebaseReady(true);
 		});
 
 		// Function to run when firebase auth change (user signs in/out)
