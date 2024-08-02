@@ -1,6 +1,4 @@
-import { ContentData } from "../types";
-
-export type DataStorageLocations = "local" | "firestore";
+import { ContentData, DataStorageLocations } from "../types";
 
 export abstract class DataStorage {
 	abstract getContentList(): Promise<ContentData[]>;

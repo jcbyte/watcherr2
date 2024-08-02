@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
 import Signature from "./components/Signature";
+import UserSelection from "./components/UserSelection";
 import { DataStorage, dataStorageRef } from "./dataStorage/DataStorage";
 import { ContentData } from "./types";
 
@@ -141,6 +142,8 @@ export default function App() {
 			</div>
 
 			<Signature />
+
+			<UserSelection />
 		</>
 	);
 }

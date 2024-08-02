@@ -9,3 +9,5 @@ export type ContentData = {
 	episode?: number;
 	time?: number;
 };
+
+export type DataStorageLocations = "local" | "firestore";
