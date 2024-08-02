@@ -5,14 +5,19 @@ import GoogleIcon from "@mui/icons-material/Google";
 import PersonIcon from "@mui/icons-material/Person";
 import { DataStorageLocations } from "../types";
 
-export default function UserSelection() {
+export default function UserSelection({
+	setStorageLocation,
+}: {
+	setStorageLocation: (storageLocation: DataStorageLocations) => void;
+}) {
+	// TODO should not be set as local always on mount
 	const [selectedOption, setSelectedOption] = useState(1);
 	const [menuOpen, setMenuOpen] = useState<Boolean>(false);
 	const anchorEl = createRef<HTMLElement>();
 
 	const validOptions: DataStorageLocations[] = ["local", "firestore"];
-	function getMenuItem(type: DataStorageLocations): JSX.Element {
-		switch (type) {
+	function getOptionDisplay(location: DataStorageLocations, type: "shown" | "menu"): JSX.Element {
+		switch (location) {
 			case "local":
 				return (
 					<>
@@ -21,13 +26,26 @@ export default function UserSelection() {
 					</>
 				);
 			case "firestore":
-				return (
-					<>
-						<GoogleIcon />
-						Sign In
-					</>
-				);
+				if (type === "shown")
+					return (
+						<>
+							<GoogleIcon />
+							Joel Cutler
+						</>
+					);
+				else
+					return (
+						<>
+							<GoogleIcon />
+							Sign Out
+						</>
+					);
 		}
+	}
+
+	function menuItemSelected(index: number) {
+		setSelectedOption(index);
+		setStorageLocation(validOptions[index]);
 	}
 
 	return (
@@ -39,8 +57,7 @@ export default function UserSelection() {
 				}}
 				ref={anchorEl as React.RefObject<HTMLButtonElement>}
 			>
-				{validOptions[selectedOption]}
-				{getMenuItem("local")}
+				{getOptionDisplay(validOptions[selectedOption], "shown")}
 			</Button>
 			<Menu
 				anchorEl={anchorEl.current}
@@ -53,12 +70,12 @@ export default function UserSelection() {
 					<MenuItem
 						key={index}
 						// selected={index === selectedIndex}
-						onClick={(event) => {
-							setSelectedOption(index);
+						onClick={(e) => {
+							menuItemSelected(index);
 							setMenuOpen(false);
 						}}
 					>
-						{getMenuItem(option)}
+						{getOptionDisplay(option, "menu")}
 					</MenuItem>
 				))}
 			</Menu>

@@ -143,7 +143,7 @@ export default function App() {
 
 			<Signature />
 
-			<UserSelection />
+			<UserSelection setStorageLocation={() => {}} />
 		</>
 	);
 }
