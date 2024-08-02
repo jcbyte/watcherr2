@@ -6,8 +6,9 @@ import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
 import Signature from "./components/Signature";
 import UserSelection from "./components/UserSelection";
-import { DataStorage, dataStorageRef } from "./dataStorage/DataStorage";
+import DataStorage from "./dataStorage/DataStorage";
 import { auth } from "./firestore/firebase";
+import { dataStorageRef } from "./static";
 import { ContentData } from "./types";
 
 export default function App() {
