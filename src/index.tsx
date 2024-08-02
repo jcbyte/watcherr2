@@ -28,6 +28,11 @@ const theme = createTheme({
 			default: COLORS.background,
 		},
 	},
+	typography: {
+		button: {
+			textTransform: "none",
+		},
+	},
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
