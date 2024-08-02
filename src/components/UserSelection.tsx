@@ -1,5 +1,5 @@
 import { Button, Menu, MenuItem } from "@mui/material";
-import { createRef, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 
 import GoogleIcon from "@mui/icons-material/Google";
 import PersonIcon from "@mui/icons-material/Person";
@@ -48,10 +48,21 @@ export default function UserSelection({
 		setStorageLocation(validOptions[index]);
 	}
 
+	// ! There is an issue that anchorEl.current is apparently `null` when the menu tries to use it
+	useEffect(() => {
+		let siid = setInterval(() => {
+			console.log(anchorEl.current);
+		}, 1000);
+
+		return () => {
+			clearInterval(siid);
+		};
+	});
+
 	return (
-		<div>
+		<>
 			<Button
-				variant="contained"
+				variant="outlined"
 				onClick={() => {
 					setMenuOpen(true);
 				}}
@@ -79,6 +90,6 @@ export default function UserSelection({
 					</MenuItem>
 				))}
 			</Menu>
-		</div>
+		</>
 	);
 }

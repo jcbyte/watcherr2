@@ -97,6 +97,10 @@ export default function App() {
 
 	return (
 		<>
+			<div className="absolute top-2 right-2">
+				<UserSelection setStorageLocation={() => {}} />
+			</div>
+
 			<div className="max-w-3xl m-auto">
 				<div className="flex flex-col gap-2 m-2">
 					<span className="shinyText text-4xl font-medium text-center m-4">Watchrr2</span>
@@ -142,8 +146,6 @@ export default function App() {
 			</div>
 
 			<Signature />
-
-			<UserSelection setStorageLocation={() => {}} />
 		</>
 	);
 }
