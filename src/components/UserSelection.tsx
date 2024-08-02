@@ -1,5 +1,5 @@
 import { Button, Menu, MenuItem } from "@mui/material";
-import { createRef, useEffect, useState } from "react";
+import { useState } from "react";
 
 import GoogleIcon from "@mui/icons-material/Google";
 import PersonIcon from "@mui/icons-material/Person";
@@ -13,7 +13,7 @@ export default function UserSelection({
 	// TODO should not be set as local always on mount
 	const [selectedOption, setSelectedOption] = useState(1);
 	const [menuOpen, setMenuOpen] = useState<Boolean>(false);
-	const anchorEl = createRef<HTMLElement>();
+	const [anchorEl, setAnchorEl] = useState<HTMLElement>();
 
 	const validOptions: DataStorageLocations[] = ["local", "firestore"];
 	function getOptionDisplay(location: DataStorageLocations, type: "shown" | "menu"): JSX.Element {
@@ -48,17 +48,6 @@ export default function UserSelection({
 		setStorageLocation(validOptions[index]);
 	}
 
-	// ! There is an issue that anchorEl.current is apparently `null` when the menu tries to use it
-	useEffect(() => {
-		let siid = setInterval(() => {
-			console.log(anchorEl.current);
-		}, 1000);
-
-		return () => {
-			clearInterval(siid);
-		};
-	});
-
 	return (
 		<>
 			<Button
@@ -66,12 +55,14 @@ export default function UserSelection({
 				onClick={() => {
 					setMenuOpen(true);
 				}}
-				ref={anchorEl as React.RefObject<HTMLButtonElement>}
+				ref={(ref) => {
+					setAnchorEl(ref as HTMLButtonElement);
+				}}
 			>
 				{getOptionDisplay(validOptions[selectedOption], "shown")}
 			</Button>
 			<Menu
-				anchorEl={anchorEl.current}
+				anchorEl={anchorEl}
 				open={Boolean(menuOpen)}
 				onClose={() => {
 					setMenuOpen(false);
