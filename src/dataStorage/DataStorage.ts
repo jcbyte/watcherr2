@@ -19,6 +19,7 @@ export class LocalDataStorage extends DataStorage {
 	}
 }
 
+// TODO
 export class FirestoreDataStorage extends DataStorage {
 	async getContentList(): Promise<ContentData[]> {
 		return [];

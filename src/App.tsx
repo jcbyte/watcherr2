@@ -7,6 +7,7 @@ import ContentListItem, { ListAction } from "./components/ContentListItem";
 import Signature from "./components/Signature";
 import UserSelection from "./components/UserSelection";
 import { DataStorage, dataStorageRef } from "./dataStorage/DataStorage";
+import { auth } from "./firestore/firebase";
 import { ContentData } from "./types";
 
 export default function App() {
@@ -30,6 +31,18 @@ export default function App() {
 	// On app load, then get the contents list
 	useEffect(() => {
 		loadContentList();
+	}, []);
+
+	useEffect(() => {
+		// Once firebase service is loaded the flag is set
+		auth.authStateReady().then(() => {
+			// setFirebaseReady(true);
+		});
+
+		// Function to run when firebase auth change (user signs in/out)
+		auth.onAuthStateChanged((user) => {
+			console.log(user);
+		});
 	}, []);
 
 	// Save the content list to the external storage whenever it is modified
