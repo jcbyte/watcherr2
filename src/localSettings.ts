@@ -1,10 +1,10 @@
-export const ValidLocalSettings = ["dataStorage"] as const;
-export type ValidLocalSettingsType = (typeof ValidLocalSettings)[number];
-type SettingsObject = Record<ValidLocalSettingsType, string>;
+export const ValidLocalSettingsList = ["dataStorage"] as const;
+export type ValidLocalSettings = (typeof ValidLocalSettingsList)[number];
+type SettingsObject = Record<ValidLocalSettings, string>;
 
 export function getLocalSettings(): SettingsObject {
 	let obj = Object.fromEntries(
-		ValidLocalSettings.map((setting: ValidLocalSettingsType) => [setting, localStorage.getItem(setting)])
+		ValidLocalSettingsList.map((setting: ValidLocalSettings) => [setting, localStorage.getItem(setting)])
 	);
 
 	return obj as SettingsObject;

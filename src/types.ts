@@ -10,4 +10,5 @@ export type ContentData = {
 	time?: number;
 };
 
-export type DataStorageLocations = "local" | "firestore";
+export const DataStorageLocationsList = ["local", "firestore"] as const;
+export type DataStorageLocations = (typeof DataStorageLocationsList)[number];

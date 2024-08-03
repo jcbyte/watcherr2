@@ -8,8 +8,9 @@ import Signature from "./components/Signature";
 import UserSelection from "./components/UserSelection";
 import DataStorage from "./dataStorage/DataStorage";
 import { auth } from "./firestore/firebase";
+import { getLocalSettings, setLocalSettings } from "./localSettings";
 import { dataStorageRef } from "./static";
-import { ContentData, DataStorageLocations } from "./types";
+import { ContentData, DataStorageLocations, DataStorageLocationsList } from "./types";
 
 export default function App() {
 	const [dataStorage, setDataStorage] = useState<DataStorage>();
@@ -36,6 +37,7 @@ export default function App() {
 
 	// function to set our data storage location
 	function setStorageLocation(storageLocation: DataStorageLocations) {
+		setLocalSettings({ dataStorage: storageLocation });
 		setDataStorage(new dataStorageRef[storageLocation]());
 	}
 
@@ -46,7 +48,12 @@ export default function App() {
 		loadContentList();
 	}, [dataStorage]);
 
+	// Run on mount
 	useEffect(() => {
+		let localSettings = getLocalSettings();
+		if (DataStorageLocationsList.includes(localSettings.dataStorage as DataStorageLocations))
+			setStorageLocation(localSettings.dataStorage as DataStorageLocations);
+
 		// Once firebase service is loaded the flag is set
 		auth.authStateReady().then(() => {
 			setFirebaseReady(true);
