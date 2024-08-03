@@ -1,10 +1,10 @@
-import { Avatar, Button, Menu, MenuItem } from "@mui/material";
+import { Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 
-import GoogleIcon from "@mui/icons-material/Google";
-import PersonIcon from "@mui/icons-material/Person";
-import { auth, signInFirebaseGoogle, signOutFirebase } from "../firestore/firebase";
-import { DataStorageLocations } from "../types";
+import { signInFirebaseGoogle, signOutFirebase } from "../firestore/firebase";
+import { DataStorageLocations, DataStorageLocationsList } from "../types";
+import { ACCOUNT_DISPLAY_FUNCTION } from "../utils/accountDisplayFunction";
+import { getJSX } from "../utils/utils";
 
 export default function UserSelection({
 	selectedOption,
@@ -17,61 +17,6 @@ export default function UserSelection({
 }) {
 	const [menuOpen, setMenuOpen] = useState<Boolean>(false);
 	const [anchorEl, setAnchorEl] = useState<HTMLElement>();
-
-	const validOptions: DataStorageLocations[] = ["local", "firestore"];
-	function getOptionDisplay(location: DataStorageLocations | null, type: "shown" | "menu"): JSX.Element {
-		function getOptionPartDisplay(): JSX.Element {
-			switch (location) {
-				case "local":
-					return (
-						<>
-							<PersonIcon />
-							<span>Guest</span>
-						</>
-					);
-
-				case "firestore":
-					if (type === "shown") {
-						return (
-							<>
-								<Avatar src={auth.currentUser?.photoURL ?? ""} className="!size-6" />
-								<span>{auth.currentUser?.displayName}</span>
-							</>
-						);
-					} else {
-						if (isAuthed) {
-							if (selectedOption !== "firestore") {
-								return (
-									<>
-										<Avatar src={auth.currentUser?.photoURL ?? ""} className="!size-6" />
-										<span>{auth.currentUser?.displayName}</span>
-									</>
-								);
-							} else {
-								return (
-									<>
-										<GoogleIcon />
-										<span>Sign Out</span>
-									</>
-								);
-							}
-						} else {
-							return (
-								<>
-									<GoogleIcon />
-									<span>Sign In</span>
-								</>
-							);
-						}
-					}
-
-				default:
-					return <>Select Account</>;
-			}
-		}
-
-		return <div className="flex gap-2">{getOptionPartDisplay()}</div>;
-	}
 
 	// ? this switch is very similar to the above is there a way to combine these into a single? or would this even make sense?
 	function menuItemSelected(selectedStorageLocation: DataStorageLocations) {
@@ -108,7 +53,13 @@ export default function UserSelection({
 					setAnchorEl(ref as HTMLButtonElement);
 				}}
 			>
-				{getOptionDisplay(selectedOption, "shown")}
+				<div className="flex gap-2">
+					{selectedOption ? (
+						getJSX(ACCOUNT_DISPLAY_FUNCTION[selectedOption].displaySelectionShown)
+					) : (
+						<span>Select Account</span>
+					)}
+				</div>
 			</Button>
 			<Menu
 				anchorEl={anchorEl}
@@ -117,16 +68,21 @@ export default function UserSelection({
 					setMenuOpen(false);
 				}}
 			>
-				{validOptions.map((option, index) => (
+				{DataStorageLocationsList.map((option, index) => (
 					<MenuItem
 						key={index}
 						// selected={index === selectedIndex}
 						onClick={(e) => {
-							menuItemSelected(validOptions[index]);
+							menuItemSelected(option);
 							setMenuOpen(false);
 						}}
 					>
-						{getOptionDisplay(option, "menu")}
+						<div className="flex gap-2">
+							{getJSX(ACCOUNT_DISPLAY_FUNCTION[option].displaySelectionMenu, [
+								selectedOption,
+								option === "firestore" && { isAuthed: isAuthed },
+							])}
+						</div>
 					</MenuItem>
 				))}
 			</Menu>

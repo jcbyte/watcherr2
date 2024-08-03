@@ -1,41 +1,23 @@
-import GoogleIcon from "@mui/icons-material/Google";
-import PersonIcon from "@mui/icons-material/Person";
 import { Button, Dialog } from "@mui/material";
-import { DataStorageLocations, DataStorageLocationsList } from "../types";
+import { DataStorageLocationsList } from "../types";
+import { ACCOUNT_DISPLAY_FUNCTION } from "../utils/accountDisplayFunction";
+import { getJSX } from "../utils/utils";
 
 export default function SelectAccountDialog() {
-	// ? This again is similar to in user selection is there a way we can merge all of these
-	function getLogoDisplay(location: DataStorageLocations) {
-		function getLogoPartDisplay() {
-			switch (location) {
-				case "local":
-					return (
-						<>
-							<PersonIcon />
-							Guest
-						</>
-					);
-				case "firestore":
-					return (
-						<>
-							<GoogleIcon />
-							Sign in
-						</>
-					);
-			}
-		}
-
-		return <div className="flex flex-col items-center">{getLogoPartDisplay()}</div>;
-	}
-
 	return (
 		<>
-			<Dialog open={true} fullWidth>
+			<Dialog open={false} fullWidth>
 				<div className="p-2">
 					<span className="text-lg">Continue as:</span>
 					<div className="flex gap-2 justify-center">
-						{DataStorageLocationsList.map((location) => {
-							return <Button variant="contained">{getLogoDisplay(location)}</Button>;
+						{DataStorageLocationsList.map((option) => {
+							return (
+								<Button variant="contained">
+									<div className="flex flex-col items-center">
+										{getJSX(ACCOUNT_DISPLAY_FUNCTION[option].displayDialog)}
+									</div>
+								</Button>
+							);
 						})}
 					</div>
 				</div>
