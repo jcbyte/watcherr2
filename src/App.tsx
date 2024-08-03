@@ -9,10 +9,10 @@ import UserSelection from "./components/UserSelection";
 import DataStorage from "./dataStorage/DataStorage";
 import { auth } from "./firestore/firebase";
 import { dataStorageRef } from "./static";
-import { ContentData } from "./types";
+import { ContentData, DataStorageLocations } from "./types";
 
 export default function App() {
-	const [dataStorage, setDataStorage] = useState<DataStorage>(new dataStorageRef.local());
+	const [dataStorage, setDataStorage] = useState<DataStorage>();
 
 	const [contentList, setContentList] = useState<ContentData[]>([]);
 	const [contentListLoaded, setContentListLoaded] = useState<boolean>(false);
@@ -25,6 +25,8 @@ export default function App() {
 
 	// Load the content list from external storage
 	function loadContentList() {
+		if (!dataStorage) throw new Error("Data location not set");
+
 		setContentListLoaded(false);
 		dataStorage.getContentList().then((data) => {
 			setContentList(data);
@@ -32,10 +34,17 @@ export default function App() {
 		});
 	}
 
-	// On app load, then get the contents list
+	// function to set our data storage location
+	function setStorageLocation(storageLocation: DataStorageLocations) {
+		setDataStorage(new dataStorageRef[storageLocation]());
+	}
+
+	// When storage location is set we reload the list from the new dataStorageLocation
 	useEffect(() => {
+		if (!dataStorage) return;
+
 		loadContentList();
-	}, []);
+	}, [dataStorage]);
 
 	useEffect(() => {
 		// Once firebase service is loaded the flag is set
@@ -55,6 +64,8 @@ export default function App() {
 
 	// Save the content list to the external storage whenever it is modified
 	useEffect(() => {
+		if (!dataStorage) return;
+
 		if (contentListLoaded) dataStorage.setContentList(contentList);
 	}, [contentList]);
 
@@ -119,7 +130,7 @@ export default function App() {
 	return (
 		<>
 			<div className="absolute top-2 right-2">
-				<UserSelection setStorageLocation={() => {}} isAuthed={isAuthed} />
+				<UserSelection setStorageLocation={setStorageLocation} isAuthed={isAuthed} />
 			</div>
 
 			<div className="max-w-3xl m-auto">
