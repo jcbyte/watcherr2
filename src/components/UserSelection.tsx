@@ -65,7 +65,7 @@ export default function UserSelection({
 					}
 
 				default:
-					return <>null</>;
+					return <>Select Account</>;
 			}
 		}
 
@@ -90,9 +90,10 @@ export default function UserSelection({
 						setSelectedOption(null);
 					}
 				} else {
-					signInFirebaseGoogle();
-					setSelectedOption(selectedStorageLocation);
-					setStorageLocation(selectedStorageLocation);
+					signInFirebaseGoogle().then(() => {
+						setSelectedOption(selectedStorageLocation);
+						setStorageLocation(selectedStorageLocation);
+					});
 				}
 				break;
 		}
