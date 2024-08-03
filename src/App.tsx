@@ -9,9 +9,9 @@ import Signature from "./components/Signature";
 import UserSelection from "./components/UserSelection";
 import DataStorage from "./dataStorage/DataStorage";
 import { auth } from "./firestore/firebase";
-import { getLocalSettings, setLocalSettings } from "./localSettings";
 import { dataStorageRef } from "./static";
 import { ContentData, DataStorageLocations, DataStorageLocationsList } from "./types";
+import { getLocalSettings, setLocalSettings } from "./utils/localSettings";
 
 export default function App() {
 	const [dataStorage, setDataStorage] = useState<DataStorage | null>();

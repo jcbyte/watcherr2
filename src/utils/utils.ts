@@ -1,4 +1,4 @@
-import { ContentData } from "./types";
+import { ContentData } from "../types";
 
 export function validateContentData(content: ContentData): boolean {
 	if (!content.name) return false;
