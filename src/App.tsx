@@ -4,6 +4,7 @@ import { Button, IconButton } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
+import SelectAccountDialog from "./components/SelectAccountDialog";
 import Signature from "./components/Signature";
 import UserSelection from "./components/UserSelection";
 import DataStorage from "./dataStorage/DataStorage";
@@ -198,6 +199,8 @@ export default function App() {
 				dialogFor={dialogFor}
 				contentList={contentList}
 			/>
+
+			<SelectAccountDialog />
 
 			<div className="fixed left-1 bottom-1">
 				<IconButton size="large" disabled={!contentListLoaded} onClick={loadContentList}>
