@@ -1,6 +1,6 @@
 export const ValidLocalSettingsList = ["dataStorage"] as const;
 export type ValidLocalSettings = (typeof ValidLocalSettingsList)[number];
-type SettingsObject = Record<ValidLocalSettings, string>;
+type SettingsObject = Record<ValidLocalSettings, any>;
 
 export function getLocalSettings(): SettingsObject {
 	let obj = Object.fromEntries(

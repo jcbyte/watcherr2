@@ -7,13 +7,14 @@ import { auth, signInFirebaseGoogle, signOutFirebase } from "../firestore/fireba
 import { DataStorageLocations } from "../types";
 
 export default function UserSelection({
-	setStorageLocation,
+	selectedOption,
+	setSelectedOption,
 	isAuthed,
 }: {
-	setStorageLocation: (storageLocation: DataStorageLocations) => void;
+	selectedOption: DataStorageLocations | null;
+	setSelectedOption: React.Dispatch<React.SetStateAction<DataStorageLocations | null>>;
 	isAuthed: boolean;
 }) {
-	const [selectedOption, setSelectedOption] = useState<DataStorageLocations | null>(null);
 	const [menuOpen, setMenuOpen] = useState<Boolean>(false);
 	const [anchorEl, setAnchorEl] = useState<HTMLElement>();
 
@@ -77,14 +78,12 @@ export default function UserSelection({
 		switch (selectedStorageLocation) {
 			case "local":
 				setSelectedOption(selectedStorageLocation);
-				setStorageLocation(selectedStorageLocation);
 				break;
 
 			case "firestore":
 				if (isAuthed) {
 					if (selectedOption !== "firestore") {
 						setSelectedOption(selectedStorageLocation);
-						setStorageLocation(selectedStorageLocation);
 					} else {
 						signOutFirebase();
 						setSelectedOption(null);
@@ -92,7 +91,6 @@ export default function UserSelection({
 				} else {
 					signInFirebaseGoogle().then(() => {
 						setSelectedOption(selectedStorageLocation);
-						setStorageLocation(selectedStorageLocation);
 					});
 				}
 				break;

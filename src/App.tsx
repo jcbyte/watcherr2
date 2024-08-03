@@ -1,7 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { Button, IconButton } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
 import Signature from "./components/Signature";
@@ -13,7 +13,7 @@ import { dataStorageRef } from "./static";
 import { ContentData, DataStorageLocations, DataStorageLocationsList } from "./types";
 
 export default function App() {
-	const [dataStorage, setDataStorage] = useState<DataStorage>();
+	const [dataStorage, setDataStorage] = useState<DataStorage | null>();
 
 	const [contentList, setContentList] = useState<ContentData[]>([]);
 	const [contentListLoaded, setContentListLoaded] = useState<boolean>(false);
@@ -23,6 +23,9 @@ export default function App() {
 
 	const [firebaseReady, setFirebaseReady] = useState<boolean>(false);
 	const [isAuthed, setIsAuthed] = useState<boolean>(false);
+
+	// For UserSelection
+	const [selectedDataStorage, setSelectedDataStorage] = useState<DataStorageLocations | null>(null);
 
 	// Load the content list from external storage
 	function loadContentList() {
@@ -36,9 +39,9 @@ export default function App() {
 	}
 
 	// function to set our data storage location
-	function setStorageLocation(storageLocation: DataStorageLocations) {
+	function setStorageLocation(storageLocation: DataStorageLocations | null) {
 		setLocalSettings({ dataStorage: storageLocation });
-		setDataStorage(new dataStorageRef[storageLocation]());
+		setDataStorage(storageLocation ? new dataStorageRef[storageLocation]() : null);
 	}
 
 	// When storage location is set we reload the list from the new dataStorageLocation
@@ -48,11 +51,25 @@ export default function App() {
 		loadContentList();
 	}, [dataStorage]);
 
+	const selectedDataStorage_firstUpdate = useRef(true);
+	// When selected data location is changed we need to actually change it
+	useEffect(() => {
+		// Don't reset it to `null` on mount
+		if (selectedDataStorage_firstUpdate.current) {
+			selectedDataStorage_firstUpdate.current = false;
+			return;
+		}
+
+		setStorageLocation(selectedDataStorage);
+	}, [selectedDataStorage]);
+
 	// Run on mount
 	useEffect(() => {
 		let localSettings = getLocalSettings();
-		if (DataStorageLocationsList.includes(localSettings.dataStorage as DataStorageLocations))
+		if (DataStorageLocationsList.includes(localSettings.dataStorage as DataStorageLocations)) {
+			setSelectedDataStorage(localSettings.dataStorage as DataStorageLocations);
 			setStorageLocation(localSettings.dataStorage as DataStorageLocations);
+		}
 
 		// Once firebase service is loaded the flag is set
 		auth.authStateReady().then(() => {
@@ -137,7 +154,11 @@ export default function App() {
 	return (
 		<>
 			<div className="absolute top-2 right-2">
-				<UserSelection setStorageLocation={setStorageLocation} isAuthed={isAuthed} />
+				<UserSelection
+					selectedOption={selectedDataStorage}
+					setSelectedOption={setSelectedDataStorage}
+					isAuthed={isAuthed}
+				/>
 			</div>
 
 			<div className="max-w-3xl m-auto">
