@@ -10,9 +10,9 @@ export default function SelectAccountDialog({ isAuthed }: { isAuthed: boolean })
 				<div className="p-2">
 					<span className="text-lg">Continue as:</span>
 					<div className="flex gap-2 justify-center">
-						{DataStorageLocationsList.map((option) => {
+						{DataStorageLocationsList.map((option, index) => {
 							return (
-								<Button variant="contained">
+								<Button variant="contained" key={index}>
 									<div className="flex flex-col items-center">
 										{getJSX(ACCOUNT_DISPLAY_FUNCTION[option].displayDialog, [
 											option === "firestore" && { isAuthed: isAuthed },

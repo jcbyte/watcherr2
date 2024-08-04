@@ -1,7 +1,6 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 
-import { signInFirebaseGoogle, signOutFirebase } from "../firestore/firebase";
 import { DataStorageLocations, DataStorageLocationsList } from "../types";
 import { ACCOUNT_DISPLAY_FUNCTION } from "../utils/accountDisplayFunction";
 import { getJSX } from "../utils/utils";
@@ -17,30 +16,6 @@ export default function UserSelection({
 }) {
 	const [menuOpen, setMenuOpen] = useState<Boolean>(false);
 	const [anchorEl, setAnchorEl] = useState<HTMLElement>();
-
-	// ? this switch is very similar to the above is there a way to combine these into a single? or would this even make sense?
-	function menuItemSelected(selectedStorageLocation: DataStorageLocations) {
-		switch (selectedStorageLocation) {
-			case "local":
-				setSelectedOption(selectedStorageLocation);
-				break;
-
-			case "firestore":
-				if (isAuthed) {
-					if (selectedOption !== "firestore") {
-						setSelectedOption(selectedStorageLocation);
-					} else {
-						signOutFirebase();
-						setSelectedOption(null);
-					}
-				} else {
-					signInFirebaseGoogle().then(() => {
-						setSelectedOption(selectedStorageLocation);
-					});
-				}
-				break;
-		}
-	}
 
 	return (
 		<>
@@ -73,7 +48,21 @@ export default function UserSelection({
 						key={index}
 						// selected={index === selectedIndex}
 						onClick={(e) => {
-							menuItemSelected(option);
+							ACCOUNT_DISPLAY_FUNCTION[option]
+								.selectAccount({
+									...(option === "firestore" && { signOut: selectedOption === "firestore", isAuthed: isAuthed }),
+								})
+								.then((accepted) => {
+									if (accepted) {
+										if (option === "firestore" && selectedOption === "firestore") {
+											// In this case the user has signed out
+											setSelectedOption(null);
+											return;
+										}
+
+										setSelectedOption(option);
+									}
+								});
 							setMenuOpen(false);
 						}}
 					>
