@@ -200,7 +200,7 @@ export default function App() {
 				contentList={contentList}
 			/>
 
-			<SelectAccountDialog />
+			<SelectAccountDialog isAuthed={isAuthed} />
 
 			<div className="fixed left-1 bottom-1">
 				<IconButton size="large" disabled={!contentListLoaded} onClick={loadContentList}>

@@ -65,7 +65,13 @@ export const ACCOUNT_DISPLAY_FUNCTION: Record<DataStorageLocations, AccountValue
 				return FIRESTORE_DISPLAY_SIGN_IN;
 			}
 		}) as (selectedOption: DataStorageLocations, options?: { [key: string]: any }) => JSX.Element,
-		displayDialog: FIRESTORE_DISPLAY_SIGN_IN,
+		displayDialog: ((options: { isAuthed: boolean }) => {
+			if (options.isAuthed) {
+				return FIRESTORE_DISPLAY_USER;
+			} else {
+				return FIRESTORE_DISPLAY_SIGN_IN;
+			}
+		}) as (options?: { [key: string]: any }) => JSX.Element,
 		async selectAccount() {
 			// TODO
 			return true;
