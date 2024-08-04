@@ -26,6 +26,7 @@ function ProduceIconWithText(icon: JSX.Element, text: string): JSX.Element {
 const LOCAL_DISPLAY_JSX: JSX.Element = ProduceIconWithText(<PersonIcon />, "Guest");
 const FIRESTORE_DISPLAY_SIGN_IN: JSX.Element = ProduceIconWithText(<GoogleIcon />, "Sign In");
 const FIRESTORE_DISPLAY_SIGN_OUT: JSX.Element = ProduceIconWithText(<GoogleIcon />, "Sign Out");
+// ! This displays as unknown sometimes
 const FIRESTORE_DISPLAY_USER: () => JSX.Element = () =>
 	ProduceIconWithText(
 		<Avatar src={auth.currentUser?.photoURL ?? ""} className="!size-6" />,
