@@ -30,7 +30,9 @@ export default function UserSelection({
 			>
 				<div className="flex gap-2">
 					{selectedOption ? (
-						getJSX(ACCOUNT_DISPLAY_FUNCTION[selectedOption].displaySelectionShown)
+						getJSX(ACCOUNT_DISPLAY_FUNCTION[selectedOption].displaySelectionShown, [
+							selectedOption === "firestore" && { isAuthed: isAuthed },
+						])
 					) : (
 						<span>Select Account</span>
 					)}
