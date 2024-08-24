@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { DEFAULT_CONTENT } from "../static";
 import { ContentData } from "../types";
 import { validateContentData } from "../utils/utils";
+import { useSnackbarAlert } from "./SnackbarAlertProvider";
 
 const DialogTransition = React.forwardRef(function Transition(
 	props: TransitionProps & {
@@ -28,6 +29,8 @@ export default function ContentDialog({
 	contentList: ContentData[];
 }) {
 	const [workingContentData, setWorkingContentData] = React.useState<ContentData>(DEFAULT_CONTENT);
+
+	const { showAlert } = useSnackbarAlert();
 
 	useEffect(() => {
 		if (dialogOpen) setWorkingContentData(dialogFor >= 0 ? contentList[dialogFor] : DEFAULT_CONTENT);
@@ -124,7 +127,11 @@ export default function ContentDialog({
 							variant="contained"
 							className="basis-full"
 							onClick={() => {
-								if (validateContentData(workingContentData)) saveDialogChanges(workingContentData);
+								if (validateContentData(workingContentData)) {
+									saveDialogChanges(workingContentData);
+								} else {
+									showAlert("Cannot save this content.");
+								}
 							}}
 							color="primary"
 						>
