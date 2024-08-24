@@ -91,14 +91,17 @@ export default function App() {
 		auth.onAuthStateChanged((user) => {
 			if (user) {
 				setIsAuthed(true);
-				if (selectedDataStorage == "firestore") {
-					setDataStorageReady(true);
-				}
 			} else {
 				setIsAuthed(false);
 			}
 		});
 	}, []);
+
+	useEffect(() => {
+		if (selectedDataStorage == "firestore") {
+			setDataStorageReady(true);
+		}
+	}, [isAuthed]);
 
 	// Save the content list to the external storage whenever it is modified
 	useEffect(() => {
