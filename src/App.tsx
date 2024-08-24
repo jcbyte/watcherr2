@@ -6,7 +6,7 @@ import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
 import SelectAccountDialog from "./components/SelectAccountDialog";
 import Signature from "./components/Signature";
-import SnackbarAlert from "./components/SnackbarAlert";
+import SnackbarAlertProvider from "./components/SnackbarAlertProvider";
 import UserSelection from "./components/UserSelection";
 import DataStorage from "./dataStorage/DataStorage";
 import { auth } from "./firestore/firebase";
@@ -155,67 +155,67 @@ export default function App() {
 
 	return (
 		<>
-			<div className="absolute top-2 right-2">
-				<UserSelection
+			<SnackbarAlertProvider>
+				<div className="absolute top-2 right-2">
+					<UserSelection
+						selectedOption={selectedDataStorage}
+						setSelectedOption={setSelectedDataStorage}
+						isAuthed={isAuthed}
+					/>
+				</div>
+
+				<div className="max-w-3xl m-auto">
+					<div className="flex flex-col gap-2 m-2">
+						<span className="shinyText text-4xl font-medium text-center m-4">Watchrr2</span>
+						{contentList.map((content, i) => {
+							return (
+								<ContentListItem
+									key={i}
+									content={content}
+									listFunction={(action: ListAction) => {
+										listFunction(action, i);
+									}}
+								/>
+							);
+						})}
+
+						<Button
+							variant="contained"
+							className="!mt-2"
+							color="info"
+							onClick={() => {
+								openDialog(-1);
+							}}
+						>
+							<AddIcon />
+						</Button>
+					</div>
+				</div>
+
+				<ContentDialog
+					dialogOpen={dialogOpen}
+					closeDialog={() => {
+						setDialogOpen(false);
+					}}
+					saveDialogChanges={saveDialogChanges}
+					dialogFor={dialogFor}
+					contentList={contentList}
+				/>
+
+				<SelectAccountDialog
 					selectedOption={selectedDataStorage}
 					setSelectedOption={setSelectedDataStorage}
 					isAuthed={isAuthed}
 				/>
-			</div>
 
-			<div className="max-w-3xl m-auto">
-				<div className="flex flex-col gap-2 m-2">
-					<span className="shinyText text-4xl font-medium text-center m-4">Watchrr2</span>
-					{contentList.map((content, i) => {
-						return (
-							<ContentListItem
-								key={i}
-								content={content}
-								listFunction={(action: ListAction) => {
-									listFunction(action, i);
-								}}
-							/>
-						);
-					})}
-
-					<Button
-						variant="contained"
-						className="!mt-2"
-						color="info"
-						onClick={() => {
-							openDialog(-1);
-						}}
-					>
-						<AddIcon />
-					</Button>
+				<div className="fixed left-1 bottom-1">
+					<IconButton size="large" disabled={!contentListLoaded} onClick={loadContentList}>
+						<RefreshIcon />
+					</IconButton>
 				</div>
-			</div>
 
-			<ContentDialog
-				dialogOpen={dialogOpen}
-				closeDialog={() => {
-					setDialogOpen(false);
-				}}
-				saveDialogChanges={saveDialogChanges}
-				dialogFor={dialogFor}
-				contentList={contentList}
-			/>
-
-			<SelectAccountDialog
-				selectedOption={selectedDataStorage}
-				setSelectedOption={setSelectedDataStorage}
-				isAuthed={isAuthed}
-			/>
-
-			<div className="fixed left-1 bottom-1">
-				<IconButton size="large" disabled={!contentListLoaded} onClick={loadContentList}>
-					<RefreshIcon />
-				</IconButton>
-			</div>
-
-			<SnackbarAlert />
-
-			<Signature />
+				<Signature />
+			</SnackbarAlertProvider>
 		</>
 	);
 }
