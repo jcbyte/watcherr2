@@ -1,4 +1,6 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { ContentData } from "../types";
+import { filterUndefined } from "../utils/utils";
 import { auth, firestore, isAuth } from "./firebase";
 
 // Check if this is the first time user is using watcherr2
@@ -37,4 +39,36 @@ export async function checkRepairFirestore(): Promise<boolean> {
 	}
 
 	return false;
+}
+
+export async function getContentList(): Promise<ContentData[]> {
+	// If not logged in then throw an exception
+	if (!isAuth()) {
+		throw new Error("Not authenticated");
+	}
+
+	return await getDoc(doc(firestore, auth.currentUser!.uid, "main"))
+		.then((res) => {
+			return res.data()!.contentList as ContentData[];
+		})
+		.catch((err) => {
+			throw new Error(err.message);
+		});
+}
+
+export async function setContentList(contentList: ContentData[]): Promise<void> {
+	// If not logged in then throw an exception
+	if (!isAuth()) {
+		throw new Error("Not authenticated");
+	}
+
+	let processedContentList = contentList.map((content) => {
+		return filterUndefined(content);
+	});
+
+	await setDoc(doc(firestore, auth.currentUser!.uid, "main"), {
+		contentList: processedContentList,
+	}).catch((err) => {
+		throw new Error(err.message);
+	});
 }

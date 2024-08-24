@@ -10,3 +10,7 @@ export function getJSX(x: JSX.Element | ((...args: any[]) => JSX.Element), args?
 		return x(...(args ?? []));
 	} else return x;
 }
+
+export function filterUndefined(obj: Object): Object {
+	return Object.fromEntries(Object.entries(obj).filter(([_, value]) => value !== undefined));
+}
