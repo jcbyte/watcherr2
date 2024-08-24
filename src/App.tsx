@@ -1,6 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, Skeleton } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
@@ -16,6 +16,7 @@ import { getLocalSettings, setLocalSettings } from "./utils/localSettings";
 
 export default function App() {
 	const [dataStorage, setDataStorage] = useState<DataStorage | null>();
+	const [dataStorageReady, setDataStorageReady] = useState<boolean>(false);
 
 	const [contentList, setContentList] = useState<ContentData[]>([]);
 	const [contentListLoaded, setContentListLoaded] = useState<boolean>(false);
@@ -44,6 +45,14 @@ export default function App() {
 	function setStorageLocation(storageLocation: DataStorageLocations | null) {
 		setLocalSettings({ dataStorage: storageLocation });
 		setDataStorage(storageLocation ? new dataStorageRef[storageLocation]() : null);
+
+		switch (storageLocation) {
+			case "local":
+				setDataStorageReady(true);
+				break;
+			case "firestore":
+				setDataStorageReady(isAuthed);
+		}
 	}
 
 	// When storage location is set we reload the list from the new dataStorageLocation
@@ -51,7 +60,7 @@ export default function App() {
 		if (!dataStorage) return;
 
 		loadContentList();
-	}, [dataStorage]);
+	}, [dataStorage, dataStorageReady]);
 
 	const selectedDataStorage_firstUpdate = useRef(true);
 	// When selected data location is changed we need to actually change it
@@ -82,6 +91,9 @@ export default function App() {
 		auth.onAuthStateChanged((user) => {
 			if (user) {
 				setIsAuthed(true);
+				if (selectedDataStorage == "firestore") {
+					setDataStorageReady(true);
+				}
 			} else {
 				setIsAuthed(false);
 			}
@@ -167,17 +179,21 @@ export default function App() {
 				<div className="max-w-3xl m-auto">
 					<div className="flex flex-col gap-2 m-2">
 						<span className="shinyText text-4xl font-medium text-center m-4">Watchrr2</span>
-						{contentList.map((content, i) => {
-							return (
-								<ContentListItem
-									key={i}
-									content={content}
-									listFunction={(action: ListAction) => {
-										listFunction(action, i);
-									}}
-								/>
-							);
-						})}
+						{dataStorageReady
+							? contentList.map((content, i) => {
+									return (
+										<ContentListItem
+											key={i}
+											content={content}
+											listFunction={(action: ListAction) => {
+												listFunction(action, i);
+											}}
+										/>
+									);
+							  })
+							: [...Array(3)].map(() => {
+									return <Skeleton variant="rounded" className="w-full !h-12" />;
+							  })}
 
 						<Button
 							variant="contained"
