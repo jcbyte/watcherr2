@@ -2,6 +2,7 @@ import { Button, Dialog } from "@mui/material";
 import { DataStorageLocations, DataStorageLocationsList } from "../types";
 import { ACCOUNT_DISPLAY_FUNCTION } from "../utils/accountDisplayFunction";
 import { getJSX } from "../utils/utils";
+import { useSnackbarAlert } from "./SnackbarAlertProvider";
 
 export default function SelectAccountDialog({
 	selectedOption,
@@ -12,6 +13,8 @@ export default function SelectAccountDialog({
 	setSelectedOption: React.Dispatch<React.SetStateAction<DataStorageLocations | null>>;
 	isAuthed: boolean;
 }) {
+	const { showAlert } = useSnackbarAlert();
+
 	return (
 		<>
 			<Dialog open={!selectedOption} fullWidth>
@@ -32,8 +35,7 @@ export default function SelectAccountDialog({
 												setSelectedOption(option);
 											})
 											.catch((err) => {
-												// TODO show error
-												console.log(err.message);
+												showAlert(err.message);
 											});
 									}}
 								>

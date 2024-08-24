@@ -4,6 +4,7 @@ import { useState } from "react";
 import { DataStorageLocations, DataStorageLocationsList } from "../types";
 import { ACCOUNT_DISPLAY_FUNCTION } from "../utils/accountDisplayFunction";
 import { getJSX } from "../utils/utils";
+import { useSnackbarAlert } from "./SnackbarAlertProvider";
 
 export default function UserSelection({
 	selectedOption,
@@ -16,6 +17,8 @@ export default function UserSelection({
 }) {
 	const [menuOpen, setMenuOpen] = useState<Boolean>(false);
 	const [anchorEl, setAnchorEl] = useState<HTMLElement>();
+
+	const { showAlert } = useSnackbarAlert();
 
 	return (
 		<>
@@ -64,8 +67,7 @@ export default function UserSelection({
 									setSelectedOption(option);
 								})
 								.catch((err) => {
-									// TODO show error
-									console.log(err.message);
+									showAlert(err.message);
 								});
 							setMenuOpen(false);
 						}}
