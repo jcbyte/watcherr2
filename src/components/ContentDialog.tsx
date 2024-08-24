@@ -34,7 +34,7 @@ export default function ContentDialog({
 
 	useEffect(() => {
 		if (dialogOpen) setWorkingContentData(dialogFor >= 0 ? contentList[dialogFor] : DEFAULT_CONTENT);
-	}, [dialogOpen]);
+	}, [dialogOpen, contentList, dialogFor]);
 
 	return (
 		<>
@@ -122,7 +122,7 @@ export default function ContentDialog({
 							value={workingContentData.time ?? ""}
 							onChange={(newValue) => {
 								setWorkingContentData((prev) => {
-									let newTime = newValue.target.value == "" ? undefined : Number(newValue.target.value);
+									let newTime = newValue.target.value === "" ? undefined : Number(newValue.target.value);
 									let newWorkingContentData: ContentData = { ...prev, time: newTime };
 									return newWorkingContentData;
 								});
