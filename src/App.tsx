@@ -6,6 +6,7 @@ import ContentDialog from "./components/ContentDialog";
 import ContentListItem, { ListAction } from "./components/ContentListItem";
 import SelectAccountDialog from "./components/SelectAccountDialog";
 import Signature from "./components/Signature";
+import SnackbarAlert from "./components/SnackbarAlert";
 import UserSelection from "./components/UserSelection";
 import DataStorage from "./dataStorage/DataStorage";
 import { auth } from "./firestore/firebase";
@@ -211,6 +212,8 @@ export default function App() {
 					<RefreshIcon />
 				</IconButton>
 			</div>
+
+			<SnackbarAlert />
 
 			<Signature />
 		</>

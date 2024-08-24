@@ -72,7 +72,7 @@ export const ACCOUNT_DISPLAY_FUNCTION: Record<DataStorageLocations, AccountValue
 						return;
 					})
 					.catch(() => {
-						throw new Error("Unsuccesful sign out with firebase.");
+						throw new Error("Unsuccessful sign out with firebase.");
 					});
 			} else {
 				if (options.isAuthed) {
@@ -83,7 +83,7 @@ export const ACCOUNT_DISPLAY_FUNCTION: Record<DataStorageLocations, AccountValue
 							return;
 						})
 						.catch(() => {
-							throw new Error("Unsuccesful sign in with firebase.");
+							throw new Error("Unsuccessful sign in with firebase.");
 						});
 				}
 			}
