@@ -3,7 +3,7 @@ import FirestoreDataStorage from "./dataStorage/FirestoreDataStorage";
 import LocalDataStorage from "./dataStorage/LocalDataStorage";
 import { ContentData, DataStorageLocations } from "./types";
 
-export const VERSION = "v1.2";
+export const VERSION = "v2.0.0";
 
 export const DEFAULT_CONTENT: ContentData = {
 	type: "Film",
