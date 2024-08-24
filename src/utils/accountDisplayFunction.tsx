@@ -1,6 +1,7 @@
 import GoogleIcon from "@mui/icons-material/Google";
 import PersonIcon from "@mui/icons-material/Person";
 import { Avatar } from "@mui/material";
+import { initialiseNewUser } from "../firestore/db";
 import { auth, signInFirebaseGoogle, signOutFirebase } from "../firestore/firebase";
 import { DataStorageLocations } from "../types";
 
@@ -75,12 +76,20 @@ export const ACCOUNT_DISPLAY_FUNCTION: Record<DataStorageLocations, AccountValue
 						throw new Error("Unsuccessful sign out with firebase.");
 					});
 			} else {
+				const initUser: () => Promise<void> = async () => {
+					await initialiseNewUser();
+				};
+
 				if (options.isAuthed) {
-					return;
+					initUser().then(() => {
+						return;
+					});
 				} else {
 					return signInFirebaseGoogle()
 						.then(() => {
-							return;
+							initUser().then((newUser) => {
+								return;
+							});
 						})
 						.catch(() => {
 							throw new Error("Unsuccessful sign in with firebase.");
