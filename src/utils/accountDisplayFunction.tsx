@@ -10,8 +10,7 @@ interface AccountValues {
 		| JSX.Element
 		| ((selectedOption: DataStorageLocations, options?: { [key: string]: any }) => JSX.Element);
 	displayDialog: JSX.Element | ((options?: { [key: string]: any }) => JSX.Element);
-	// TODO this probably should not return a boolean but throw if we cannot
-	selectAccount: (options?: { [key: string]: any }) => Promise<boolean>;
+	selectAccount: (options?: { [key: string]: any }) => Promise<void>;
 }
 
 function ProduceIconWithText(icon: JSX.Element, text: string): JSX.Element {
@@ -39,11 +38,12 @@ export const ACCOUNT_DISPLAY_FUNCTION: Record<DataStorageLocations, AccountValue
 		displayDialog: LOCAL_DISPLAY_JSX,
 		selectAccount: async () => {
 			// This can always be set
-			return true;
+			return;
 		},
 	},
 
 	firestore: {
+		// We do not use isAuthed, however require it here as it forces a rerender of the function
 		displaySelectionShown: ((options: { isAuthed: boolean }) => {
 			return FIRESTORE_DISPLAY_USER();
 		}) as (options?: { [key: string]: any }) => JSX.Element,
@@ -68,17 +68,25 @@ export const ACCOUNT_DISPLAY_FUNCTION: Record<DataStorageLocations, AccountValue
 		selectAccount: (async (options: { isAuthed: boolean; signOut: boolean }) => {
 			if (options.signOut) {
 				return signOutFirebase()
-					.then(() => true)
-					.catch(() => false);
+					.then(() => {
+						return;
+					})
+					.catch(() => {
+						throw new Error("Unsuccesful sign out with firebase.");
+					});
 			} else {
 				if (options.isAuthed) {
-					return true;
+					return;
 				} else {
 					return signInFirebaseGoogle()
-						.then(() => true)
-						.catch(() => false);
+						.then(() => {
+							return;
+						})
+						.catch(() => {
+							throw new Error("Unsuccesful sign in with firebase.");
+						});
 				}
 			}
-		}) as (options?: { [key: string]: any }) => Promise<boolean>,
+		}) as (options?: { [key: string]: any }) => Promise<void>,
 	},
 };

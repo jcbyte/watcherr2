@@ -54,16 +54,18 @@ export default function UserSelection({
 								.selectAccount({
 									...(option === "firestore" && { signOut: selectedOption === "firestore", isAuthed: isAuthed }),
 								})
-								.then((accepted) => {
-									if (accepted) {
-										if (option === "firestore" && selectedOption === "firestore") {
-											// In this case the user has signed out
-											setSelectedOption(null);
-											return;
-										}
-
-										setSelectedOption(option);
+								.then(() => {
+									if (option === "firestore" && selectedOption === "firestore") {
+										// In this case the user has signed out
+										setSelectedOption(null);
+										return;
 									}
+
+									setSelectedOption(option);
+								})
+								.catch((err) => {
+									// TODO show error
+									console.log(err.message);
 								});
 							setMenuOpen(false);
 						}}

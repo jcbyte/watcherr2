@@ -28,10 +28,12 @@ export default function SelectAccountDialog({
 											.selectAccount({
 												...(option === "firestore" && { signOut: false, isAuthed: isAuthed }),
 											})
-											.then((accepted) => {
-												if (accepted) {
-													setSelectedOption(option);
-												}
+											.then(() => {
+												setSelectedOption(option);
+											})
+											.catch((err) => {
+												// TODO show error
+												console.log(err.message);
 											});
 									}}
 								>
