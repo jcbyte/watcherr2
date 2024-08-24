@@ -23,3 +23,18 @@ export async function initialiseNewUser(): Promise<boolean> {
 
 	return false;
 }
+
+// Check that the firestore database is as expected and repair it if is not
+// Returns true if a repair had to be done
+export async function checkRepairFirestore(): Promise<boolean> {
+	let mainData = await getDoc(doc(firestore, auth.currentUser!.uid, "main")).then((res) => {
+		return res.data();
+	});
+
+	if (!mainData || !mainData.contentList) {
+		await setDoc(doc(firestore, auth.currentUser!.uid, "main"), { contentList: [] });
+		return true;
+	}
+
+	return false;
+}
