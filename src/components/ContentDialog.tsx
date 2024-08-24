@@ -118,6 +118,21 @@ export default function ContentDialog({
 								className="w-20"
 							/>
 						</Collapse>
+						<TextField
+							value={workingContentData.time ?? ""}
+							onChange={(newValue) => {
+								setWorkingContentData((prev) => {
+									let newTime = newValue.target.value == "" ? undefined : Number(newValue.target.value);
+									let newWorkingContentData: ContentData = { ...prev, time: newTime };
+									return newWorkingContentData;
+								});
+							}}
+							type="number"
+							variant="standard"
+							label="Time"
+							color="secondary"
+							className="w-20"
+						/>
 					</div>
 					<div className="flex gap-2">
 						<Button variant="outlined" className="basis-full" color="warning" onClick={closeDialog}>

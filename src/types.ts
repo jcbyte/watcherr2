@@ -1,6 +1,5 @@
 export type ContentType = "Film" | "Show";
 
-// TODO add time
 export type ContentData = {
 	type: ContentType;
 	name: string;
