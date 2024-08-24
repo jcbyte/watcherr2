@@ -40,12 +40,20 @@ export default function ContentListItem({
 					</IconButton>
 
 					{content.type === "Show" && (
-						<div className="flex gap-1">
-							<div className="bg-purple-dark flex items-center gap-1 h-8 px-2 drop-shadow-md rounded">
-								<span className="text-lg">S{content.season}</span>
-								<span className="text-lg">E{content.episode}</span>
-							</div>
+						<div className="bg-purple-dark flex items-center gap-1 h-8 px-2 drop-shadow-md rounded">
+							<span className="text-lg">S{content.season}</span>
+							<span className="text-lg">E{content.episode}</span>
+						</div>
+					)}
 
+					{content.time && (
+						<div className="bg-purple-pink flex items-center h-8 px-2 drop-shadow-md rounded">
+							<span className="text-lg">{content.time}m</span>
+						</div>
+					)}
+
+					{content.type === "Show" && (
+						<div className="flex gap-1">
 							<Button
 								className="h-8 !min-w-8 w-8"
 								variant="contained"
@@ -68,6 +76,7 @@ export default function ContentListItem({
 							</Button>
 						</div>
 					)}
+
 					<span className="grow" />
 					<Button
 						className="h-8 !min-w-8 w-8"
