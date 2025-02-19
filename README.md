@@ -1,6 +1,6 @@
 # <img src="public/favicon.ico" height="40"> &nbsp;Watcherr2
 
-This app is your watchlist of current shows and films, so you can easily remember which ones you still want to see and how far through you are.
+Web app to serve as your watchlist for current shows and films, helping you keep track of what you still want to watch and your progress.
 
 ## Production Build
 
@@ -8,19 +8,19 @@ https://watcherr2.vercel.app/
 
 ## Run Locally
 
-Install dependencies
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-Start tailwind
+Start tailwind:
 
 ```bash
 npm run dev-tailwind
 ```
 
-Start local development server
+Start local development server:
 
 ```bash
 npm run dev
